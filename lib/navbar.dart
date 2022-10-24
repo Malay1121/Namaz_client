@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:namaz_timing/responsive.dart';
 
+import 'all_mosque.dart';
 import 'home_screen.dart';
 
 class NavBar extends StatelessWidget {
@@ -70,7 +71,7 @@ class NavBar extends StatelessWidget {
             onTap: () {
               if (currentPage != 'Mosque') {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
+                    MaterialPageRoute(builder: (context) => AllMosque()));
               }
             },
             child: Column(
@@ -87,7 +88,7 @@ class NavBar extends StatelessWidget {
                   height: responsiveHeight(6.2, context),
                 ),
                 Text(
-                  'Mosque',
+                  'All Mosque',
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                       color: currentPage == 'Mosque'
@@ -105,7 +106,7 @@ class NavBar extends StatelessWidget {
             onTap: () {
               if (currentPage != 'Timing') {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
+                    MaterialPageRoute(builder: (context) => AllMosque()));
               }
             },
             child: Column(

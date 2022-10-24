@@ -1,6 +1,7 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:namaz_timing/home_screen.dart';
+
+import 'home_screen.dart';
 
 void main() {
   runApp(const MyApp());
