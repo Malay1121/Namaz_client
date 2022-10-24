@@ -72,6 +72,9 @@ class _HomePageState extends State<HomePage> {
                       width: responsiveWidth(338, context),
                       height: responsiveHeight(129, context),
                       decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                        ),
                         color: black,
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -222,12 +225,24 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.home_outlined,
                       color: Color(0xFFFB7A24),
+                      size: responsiveText(20, context),
+                    ),
+                    Text(
+                      'Home',
+                      style: TextStyle(
+                        color: Color(0xFFFB7A24),
+                        fontFamily: inter,
+                        fontSize: responsiveText(10, context),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 )
