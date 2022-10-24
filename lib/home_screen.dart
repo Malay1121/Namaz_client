@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:namaz_timing/constants.dart';
 import 'package:namaz_timing/responsive.dart';
@@ -48,13 +49,15 @@ class _HomePageState extends State<HomePage> {
                     width: responsiveText(30, context),
                     height: responsiveText(30, context),
                   ),
-                  Text(
-                    'Home',
-                    style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: responsiveText(18, context),
-                        fontWeight: FontWeight.w500,
+                  FadeInDown(
+                    child: Text(
+                      'Home',
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: responsiveText(18, context),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -67,112 +70,117 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                Column(
+          SizedBox(
+            height: responsiveHeight(11, context),
+          ),
+          FlipInY(
+            preferences: AnimationPreferences(
+              offset: Duration(seconds: 1),
+            ),
+            child: Container(
+              width: responsiveWidth(338, context),
+              height: responsiveHeight(129, context),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                ),
+                color: black,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: responsiveWidth(25, context),
+                  top: responsiveHeight(18, context),
+                ),
+                child: Row(
                   children: [
-                    Container(
-                      width: responsiveWidth(338, context),
-                      height: responsiveHeight(129, context),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Jama Masjid',
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: responsiveText(16, context),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
-                        color: black,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: responsiveWidth(25, context),
-                          top: responsiveHeight(18, context),
+                        SizedBox(
+                          height: responsiveHeight(14, context),
                         ),
-                        child: Row(
+                        Row(
                           children: [
+                            Icon(
+                              Icons.schedule,
+                              color: Color(0xFF77B255),
+                              size: responsiveText(64, context),
+                            ),
+                            SizedBox(
+                              width: responsiveWidth(15, context),
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Jama Masjid',
+                                  'Dhuhr Prayer ',
                                   style: GoogleFonts.inter(
                                     textStyle: TextStyle(
                                       color: Colors.white,
-                                      fontSize: responsiveText(16, context),
+                                      fontSize: responsiveText(10, context),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '12:30 PM',
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                      color: Color(0xFF77B255),
+                                      fontSize: responsiveText(24, context),
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: responsiveHeight(14, context),
+                                Text(
+                                  'From 1:30 PM  - 3:35 PM',
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                      color: Color(0xFFA3A3A3),
+                                      fontSize: responsiveText(10, context),
+                                    ),
+                                  ),
                                 ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.schedule,
-                                      color: Color(0xFF77B255),
-                                      size: responsiveText(64, context),
-                                    ),
-                                    SizedBox(
-                                      width: responsiveWidth(15, context),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Dhuhr Prayer ',
-                                          style: GoogleFonts.inter(
-                                            textStyle: TextStyle(
-                                              color: Colors.white,
-                                              fontSize:
-                                                  responsiveText(10, context),
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          '12:30 PM',
-                                          style: GoogleFonts.inter(
-                                            textStyle: TextStyle(
-                                              color: Color(0xFF77B255),
-                                              fontSize:
-                                                  responsiveText(24, context),
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          'From 1:30 PM  - 3:35 PM',
-                                          style: GoogleFonts.inter(
-                                            textStyle: TextStyle(
-                                              color: Color(0xFFA3A3A3),
-                                              fontSize:
-                                                  responsiveText(10, context),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                )
                               ],
-                            ),
-                            Spacer(),
-                            Image.asset(
-                              'assets/castle.png',
-                              width: responsiveWidth(52, context),
-                              height: responsiveHeight(104, context),
-                            ),
-                            SizedBox(
-                              width: responsiveWidth(26, context),
-                            ),
+                            )
                           ],
-                        ),
-                      ),
+                        )
+                      ],
+                    ),
+                    Spacer(),
+                    Image.asset(
+                      'assets/castle.png',
+                      width: responsiveWidth(52, context),
+                      height: responsiveHeight(104, context),
                     ),
                     SizedBox(
-                      height: responsiveHeight(11, context),
+                      width: responsiveWidth(26, context),
                     ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: responsiveHeight(11, context),
+          ),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              children: [
+                Column(
+                  children: [
                     NamazCard(
                       image: 'masjid1.png',
                       masjidName: 'Jama Masjid',
@@ -249,74 +257,76 @@ class NamazCard extends StatelessWidget {
       padding: EdgeInsets.only(
         bottom: responsiveHeight(11, context),
       ),
-      child: Container(
-        width: responsiveWidth(343, context),
-        height: responsiveHeight(92, context),
-        decoration: BoxDecoration(
-          color: black,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: responsiveWidth(10, context),
-            top: responsiveHeight(15, context),
-            bottom: responsiveHeight(15, context),
-            right: responsiveWidth(10, context),
+      child: FadeInLeft(
+        child: Container(
+          width: responsiveWidth(343, context),
+          height: responsiveHeight(92, context),
+          decoration: BoxDecoration(
+            color: black,
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: Image.asset(
-                  'assets/$image',
-                  width: responsiveWidth(62, context),
-                  height: responsiveHeight(62, context),
-                ),
-              ),
-              SizedBox(
-                width: responsiveWidth(12, context),
-              ),
-              Text(
-                masjidName,
-                style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                    fontSize: responsiveText(16, context),
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: responsiveWidth(10, context),
+              top: responsiveHeight(15, context),
+              bottom: responsiveHeight(15, context),
+              right: responsiveWidth(10, context),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.asset(
+                    'assets/$image',
+                    width: responsiveWidth(62, context),
+                    height: responsiveHeight(62, context),
                   ),
                 ),
-              ),
-              Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    time,
-                    style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: responsiveText(16, context),
-                        color: Colors.white,
-                      ),
+                SizedBox(
+                  width: responsiveWidth(12, context),
+                ),
+                Text(
+                  masjidName,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      fontSize: responsiveText(16, context),
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
-                  SizedBox(
-                    height: responsiveHeight(6, context),
-                  ),
-                  Text(
-                    namaz,
-                    style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                        color: Color(0xFFA3A3A3),
-                        fontSize: responsiveText(10, context),
+                ),
+                Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      time,
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: responsiveText(16, context),
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    SizedBox(
+                      height: responsiveHeight(6, context),
+                    ),
+                    Text(
+                      namaz,
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                          color: Color(0xFFA3A3A3),
+                          fontSize: responsiveText(10, context),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
 
 import 'all_mosque.dart';
@@ -35,7 +36,7 @@ class NavBar extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (currentPage != 'Home') {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => HomePage()));
               }
             },
@@ -70,7 +71,7 @@ class NavBar extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (currentPage != 'Mosque') {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => AllMosque()));
               }
             },
@@ -105,8 +106,10 @@ class NavBar extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (currentPage != 'Timing') {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AllMosque()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NamazTimingScreen()));
               }
             },
             child: Column(

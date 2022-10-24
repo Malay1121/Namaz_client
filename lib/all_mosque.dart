@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:namaz_timing/constants.dart';
 import 'package:namaz_timing/responsive.dart';
@@ -48,13 +49,15 @@ class _AllMosqueState extends State<AllMosque> {
                     width: responsiveText(30, context),
                     height: responsiveText(30, context),
                   ),
-                  Text(
-                    'All Mosques',
-                    style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: responsiveText(18, context),
-                        fontWeight: FontWeight.w500,
+                  FadeInDown(
+                    child: Text(
+                      'All Mosques',
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: responsiveText(18, context),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -69,6 +72,7 @@ class _AllMosqueState extends State<AllMosque> {
           ),
           Expanded(
             child: ListView(
+              padding: EdgeInsets.zero,
               shrinkWrap: true,
               children: [
                 Column(
@@ -134,72 +138,74 @@ class MosqueCard extends StatelessWidget {
       padding: EdgeInsets.only(
         bottom: responsiveHeight(11, context),
       ),
-      child: Container(
-        width: responsiveWidth(343, context),
-        height: responsiveHeight(92, context),
-        decoration: BoxDecoration(
-          color: black,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: responsiveWidth(10, context),
-            top: responsiveHeight(15, context),
-            bottom: responsiveHeight(15, context),
-            right: responsiveWidth(10, context),
+      child: BounceInRight(
+        child: Container(
+          width: responsiveWidth(343, context),
+          height: responsiveHeight(92, context),
+          decoration: BoxDecoration(
+            color: black,
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: Image.asset(
-                  'assets/$image',
-                  width: responsiveWidth(62, context),
-                  height: responsiveHeight(62, context),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: responsiveWidth(10, context),
+              top: responsiveHeight(15, context),
+              bottom: responsiveHeight(15, context),
+              right: responsiveWidth(10, context),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.asset(
+                    'assets/$image',
+                    width: responsiveWidth(62, context),
+                    height: responsiveHeight(62, context),
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: responsiveWidth(12, context),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    masjidName,
-                    style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                        fontSize: responsiveText(16, context),
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                SizedBox(
+                  width: responsiveWidth(12, context),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      masjidName,
+                      style: GoogleFonts.inter(
+                        textStyle: TextStyle(
+                          fontSize: responsiveText(16, context),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: responsiveHeight(6, context),
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/location.png',
-                        width: responsiveText(7.5, context),
-                        height: responsiveHeight(8.74, context),
-                      ),
-                      Text(
-                        'Get Direction',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                            color: Color(0xFF77B255),
-                            fontSize: responsiveText(10, context),
-                          ),
+                    SizedBox(
+                      height: responsiveHeight(6, context),
+                    ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/location.png',
+                          width: responsiveText(7.5, context),
+                          height: responsiveHeight(8.74, context),
                         ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                        Text(
+                          'Get Direction',
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                              color: Color(0xFF77B255),
+                              fontSize: responsiveText(10, context),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
