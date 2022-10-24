@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:namaz_timing/constants.dart';
 import 'package:namaz_timing/responsive.dart';
+
+import 'navbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,6 +38,7 @@ class _HomePageState extends State<HomePage> {
                 top: responsiveHeight(55, context),
                 left: responsiveWidth(15, context),
                 right: responsiveWidth(15, context),
+                bottom: responsiveHeight(18, context),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,11 +50,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Text(
                     'Home',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: inter,
-                      fontSize: responsiveText(18, context),
-                      fontWeight: FontWeight.w500,
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: responsiveText(18, context),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   Image.asset(
@@ -90,11 +95,12 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Text(
                                   'Jama Masjid',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: inter,
-                                    fontSize: responsiveText(16, context),
-                                    fontWeight: FontWeight.w600,
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: responsiveText(16, context),
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
@@ -116,30 +122,33 @@ class _HomePageState extends State<HomePage> {
                                       children: [
                                         Text(
                                           'Dhuhr Prayer ',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: inter,
-                                            fontSize:
-                                                responsiveText(10, context),
+                                          style: GoogleFonts.inter(
+                                            textStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontSize:
+                                                  responsiveText(10, context),
+                                            ),
                                           ),
                                         ),
                                         Text(
                                           '12:30 PM',
-                                          style: TextStyle(
-                                            color: Color(0xFF77B255),
-                                            fontSize:
-                                                responsiveText(24, context),
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: inter,
+                                          style: GoogleFonts.inter(
+                                            textStyle: TextStyle(
+                                              color: Color(0xFF77B255),
+                                              fontSize:
+                                                  responsiveText(24, context),
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                         Text(
                                           'From 1:30 PM  - 3:35 PM',
-                                          style: TextStyle(
-                                            color: Color(0xFFA3A3A3),
-                                            fontFamily: inter,
-                                            fontSize:
-                                                responsiveText(10, context),
+                                          style: GoogleFonts.inter(
+                                            textStyle: TextStyle(
+                                              color: Color(0xFFA3A3A3),
+                                              fontSize:
+                                                  responsiveText(10, context),
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -211,43 +220,8 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: responsiveHeight(80, context),
-            decoration: BoxDecoration(
-              color: Color(0xFF111119),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-              border: Border.all(
-                color: Color(0xFF272738),
-              ),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.home_outlined,
-                      color: Color(0xFFFB7A24),
-                      size: responsiveText(20, context),
-                    ),
-                    Text(
-                      'Home',
-                      style: TextStyle(
-                        color: Color(0xFFFB7A24),
-                        fontFamily: inter,
-                        fontSize: responsiveText(10, context),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
+          NavBar(
+            currentPage: 'Home',
           ),
         ],
       ),
@@ -305,11 +279,12 @@ class NamazCard extends StatelessWidget {
               ),
               Text(
                 masjidName,
-                style: TextStyle(
-                  fontFamily: inter,
-                  fontSize: responsiveText(16, context),
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                    fontSize: responsiveText(16, context),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               Spacer(),
@@ -319,11 +294,12 @@ class NamazCard extends StatelessWidget {
                 children: [
                   Text(
                     time,
-                    style: TextStyle(
-                      fontFamily: inter,
-                      fontWeight: FontWeight.w600,
-                      fontSize: responsiveText(16, context),
-                      color: Colors.white,
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: responsiveText(16, context),
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -331,10 +307,11 @@ class NamazCard extends StatelessWidget {
                   ),
                   Text(
                     namaz,
-                    style: TextStyle(
-                      color: Color(0xFFA3A3A3),
-                      fontSize: responsiveText(10, context),
-                      fontFamily: inter,
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        color: Color(0xFFA3A3A3),
+                        fontSize: responsiveText(10, context),
+                      ),
                     ),
                   ),
                 ],
