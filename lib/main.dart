@@ -1,11 +1,11 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'admin.dart';
 import 'home_screen.dart';
+import 'masjid_admin.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -37,9 +37,53 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.grey.shade400,
         showLoader: true,
         loaderColor: Color(0xFF54AEB4),
-        navigator: HomePage(),
+        navigator: MainScreen(),
         durationInSeconds: 5,
       ),
+    );
+  }
+}
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GestureDetector(
+          child: Text(
+            'Go to Masjid Admin',
+          ),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MasjidTimingScreen()));
+          },
+        ),
+        GestureDetector(
+          child: Text(
+            'Go to Uvesh wala admin',
+          ),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AdminScreen()));
+          },
+        ),
+        GestureDetector(
+          child: Text(
+            'Go to normal app',
+          ),
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+          },
+        ),
+      ],
     );
   }
 }
