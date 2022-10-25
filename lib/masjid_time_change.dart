@@ -271,7 +271,7 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                           widget.uveshAdmin == true
                               ? await http.post(
                                   Uri.parse(
-                                      'https://903e-43-248-34-125.ngrok.io/updateNamazTime'),
+                                      'https://api.namaz.co.in/updateNamazTime'),
                                   headers: <String, String>{
                                     'Content-Type':
                                         'application/json; charset=UTF-8',
