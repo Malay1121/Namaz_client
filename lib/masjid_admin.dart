@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in_down.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:namaz_timing/masjid_time_change.dart';
 import 'package:namaz_timing/responsive.dart';
 
@@ -15,7 +18,53 @@ class MasjidTimingScreen extends StatefulWidget {
   State<MasjidTimingScreen> createState() => _MasjidTimingScreenState();
 }
 
+var _namaz_timing;
+
 class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
+  Future<void> getData() async {
+    var response =
+        await http.get(Uri.parse('https://api.namaz.co.in/getNamazTiming'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      setState(() {
+        _namaz_timing = jsonDecode(response.body);
+      });
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load namaz');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getData() async {
+        var response =
+            await http.get(Uri.parse('https://api.namaz.co.in/getNamazTiming'));
+
+        if (response.statusCode == 200) {
+          // If the server did return a 200 OK response,
+          // then parse the JSON.
+          setState(() {
+            _namaz_timing = jsonDecode(response.body);
+          });
+        } else {
+          // If the server did not return a 200 OK response,
+          // then throw an exception.
+          throw Exception('Failed to load namaz');
+        }
+      }
+
+      await getData();
+    });
+    print(_namaz_timing);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,100 +134,45 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
                     SizedBox(
                       height: responsiveHeight(20, context),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    GridView.count(
+                      physics: ScrollPhysics(),
+                      padding: EdgeInsets.only(
+                        left: responsiveWidth(16.5, context),
+                        right: responsiveWidth(16.5, context),
+                      ),
+                      crossAxisSpacing: responsiveWidth(12, context),
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
                       children: [
-                        FadeInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 300)),
-                          child: MasjidNamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
+                        for (var namaz in _namaz_timing['timing']!)
+                          MasjidNamazTimingCardAdmin(
+                            start: TimeOfDay.fromDateTime(
+                              DateTime.parse(
+                                namaz["start"]!,
+                              ),
+                            ),
+                            end: TimeOfDay.fromDateTime(
+                              DateTime.parse(
+                                namaz["end"]!,
+                              ),
+                            ),
+                            name: namaz['name'].toString().toUpperCase(),
+                            time: TimeOfDay.fromDateTime(
+                                  DateTime.parse(
+                                    namaz["start"]!,
+                                  ),
+                                ).format(context).toString() +
+                                ' - ' +
+                                TimeOfDay.fromDateTime(
+                                  DateTime.parse(
+                                    namaz["end"]!,
+                                  ),
+                                ).format(context).toString(),
                           ),
-                        ),
-                        FadeInRight(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 300)),
-                          child: MasjidNamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FadeInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 600)),
-                          child: MasjidNamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                        FadeInRight(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 600)),
-                          child: MasjidNamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FadeInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 900)),
-                          child: MasjidNamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                        FadeInRight(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 900)),
-                          child: MasjidNamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FadeInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 1200)),
-                          child: MasjidNamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                        FadeInRight(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 1200)),
-                          child: MasjidNamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
                       ],
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -192,14 +186,18 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
 }
 
 class MasjidNamazTimingCardAdmin extends StatelessWidget {
-  const MasjidNamazTimingCardAdmin({
-    Key? key,
-    required this.name,
-    required this.time,
-  }) : super(key: key);
+  MasjidNamazTimingCardAdmin(
+      {Key? key,
+      required this.name,
+      required this.time,
+      required this.start,
+      required this.end})
+      : super(key: key);
 
   final String name;
-  final String time;
+  TimeOfDay start;
+  TimeOfDay end;
+  String time;
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +210,11 @@ class MasjidNamazTimingCardAdmin extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MasjidTimingChangeScreen(name: name)));
+                  builder: (context) => MasjidTimingChangeScreen(
+                        name: name,
+                        time1: start,
+                        time2: end,
+                      )));
         },
         child: Container(
           width: responsiveWidth(165, context),

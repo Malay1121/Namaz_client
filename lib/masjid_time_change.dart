@@ -1,24 +1,36 @@
+import 'dart:convert';
+
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in_down.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:namaz_timing/responsive.dart';
 
 class MasjidTimingChangeScreen extends StatefulWidget {
-  const MasjidTimingChangeScreen({
+  MasjidTimingChangeScreen({
     Key? key,
     required this.name,
+    this.uveshAdmin = false,
+    required this.time1,
+    required this.time2,
   }) : super(key: key);
 
   final String name;
+  TimeOfDay time1;
+  TimeOfDay time2;
+  final bool uveshAdmin;
 
   @override
   State<MasjidTimingChangeScreen> createState() =>
       _MasjidTimingChangeScreenState();
 }
+
+var final2;
+var final1;
 
 class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
   @override
@@ -109,22 +121,167 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                       SizedBox(
                         height: responsiveHeight(40, context),
                       ),
-                      TimeWidget(
-                        title: 'Azan Time',
-                        time: TimeOfDay.now(),
+                      Text(
+                        widget.uveshAdmin == true ? 'From' : 'Azan Time',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: Color(0xFFDADADA),
+                                fontSize: responsiveText(12, context))),
+                      ),
+                      SizedBox(
+                        height: responsiveHeight(12, context),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          Navigator.of(context).push(
+                            showPicker(
+                              context: context,
+                              value: widget.time1,
+                              onChange: (val) {
+                                setState(() {
+                                  widget.time1 = val;
+                                  var df = DateFormat("h:mma");
+                                  var dt = df.parse(widget.time1
+                                      .format(context)
+                                      .replaceAll(' ', ''));
+                                  final1 =
+                                      DateTime(2022, 11, 1, dt.hour, dt.minute);
+                                  print(final1);
+                                });
+                              },
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: responsiveWidth(342, context),
+                          height: responsiveHeight(56, context),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF2D2D30),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(0, 4),
+                                blurRadius: 40,
+                                color: Color.fromRGBO(0, 0, 0, 0.3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: responsiveWidth(19, context),
+                                ),
+                                child: Text(
+                                  widget.time1.format(context),
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: responsiveText(16, context),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: responsiveHeight(20, context),
                       ),
-                      TimeWidget(
-                        title: 'Jammats Time',
-                        time: TimeOfDay.fromDateTime(DateTime.now()),
+                      Text(
+                        widget.uveshAdmin == true ? 'To' : 'Jammat Time',
+                        style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                                color: Color(0xFFDADADA),
+                                fontSize: responsiveText(12, context))),
+                      ),
+                      SizedBox(
+                        height: responsiveHeight(12, context),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          Navigator.of(context).push(
+                            showPicker(
+                              context: context,
+                              value: widget.time2,
+                              onChange: (val) {
+                                widget.time2 = val;
+                                var df = DateFormat("h:mma");
+                                var dt = df.parse(widget.time2
+                                    .format(context)
+                                    .replaceAll(' ', ''));
+
+                                setState(() {
+                                  final2 =
+                                      DateTime(2022, 11, 1, dt.hour, dt.minute);
+                                });
+                                print(final2);
+                              },
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: responsiveWidth(342, context),
+                          height: responsiveHeight(56, context),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF2D2D30),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(0, 4),
+                                blurRadius: 40,
+                                color: Color.fromRGBO(0, 0, 0, 0.3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: responsiveWidth(19, context),
+                                ),
+                                child: Text(
+                                  widget.time2.format(context),
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: responsiveText(16, context),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: responsiveHeight(67, context),
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          widget.uveshAdmin == true
+                              ? await http.post(
+                                  Uri.parse(
+                                      'https://903e-43-248-34-125.ngrok.io/updateNamazTime'),
+                                  headers: <String, String>{
+                                    'Content-Type':
+                                        'application/json; charset=UTF-8',
+                                  },
+                                  body: jsonEncode({
+                                    "name": widget.name.toLowerCase(),
+                                    "start": final1.toString(),
+                                    "end": final2.toString(),
+                                  }))
+                              : null;
                           Navigator.pop(context);
                         },
                         child: Container(
@@ -163,99 +320,6 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class TimeWidget extends StatefulWidget {
-  TimeWidget({
-    Key? key,
-    required this.title,
-    required this.time,
-  }) : super(key: key);
-  final String title;
-  TimeOfDay time;
-
-  @override
-  State<TimeWidget> createState() => _TimeWidgetState();
-}
-
-class _TimeWidgetState extends State<TimeWidget> {
-  @override
-  Widget build(BuildContext context) {
-    void onTimeChanged(TimeOfDay newTime) {
-      setState(() {
-        widget.time = newTime;
-      });
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.title,
-          style: GoogleFonts.inter(
-              textStyle: TextStyle(
-                  color: Color(0xFFDADADA),
-                  fontSize: responsiveText(12, context))),
-        ),
-        SizedBox(
-          height: responsiveHeight(12, context),
-        ),
-        GestureDetector(
-          onTap: () async {
-            Navigator.of(context).push(
-              showPicker(
-                context: context,
-                value: widget.time,
-                onChange: onTimeChanged,
-              ),
-            );
-
-            var df = DateFormat("h:mma");
-            var dt = df.parse(widget.time.format(context).replaceAll(' ', ''));
-
-            print(DateTime(2022, 11, 1, dt.hour, dt.minute));
-          },
-          child: Container(
-            width: responsiveWidth(342, context),
-            height: responsiveHeight(56, context),
-            decoration: BoxDecoration(
-              color: Color(0xFF2D2D30),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  offset: Offset(0, 4),
-                  blurRadius: 40,
-                  color: Color.fromRGBO(0, 0, 0, 0.3),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: responsiveWidth(19, context),
-                  ),
-                  child: Text(
-                    widget.time.format(context),
-                    style: GoogleFonts.inter(
-                      textStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: responsiveText(16, context),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-                Spacer(),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

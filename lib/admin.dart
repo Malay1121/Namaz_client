@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in_down.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:namaz_timing/masjid_time_change.dart';
 import 'package:namaz_timing/responsive.dart';
 
@@ -14,7 +17,53 @@ class AdminScreen extends StatefulWidget {
   State<AdminScreen> createState() => _AdminScreenState();
 }
 
+var _namaz_timing;
+
 class _AdminScreenState extends State<AdminScreen> {
+  Future<void> getData() async {
+    var response =
+        await http.get(Uri.parse('https://api.namaz.co.in/getNamazTiming'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      setState(() {
+        _namaz_timing = jsonDecode(response.body);
+      });
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load namaz');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getData() async {
+        var response =
+            await http.get(Uri.parse('https://api.namaz.co.in/getNamazTiming'));
+
+        if (response.statusCode == 200) {
+          // If the server did return a 200 OK response,
+          // then parse the JSON.
+          setState(() {
+            _namaz_timing = jsonDecode(response.body);
+          });
+        } else {
+          // If the server did not return a 200 OK response,
+          // then throw an exception.
+          throw Exception('Failed to load namaz');
+        }
+      }
+
+      await getData();
+    });
+    print(_namaz_timing);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,123 +111,71 @@ class _AdminScreenState extends State<AdminScreen> {
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: responsiveHeight(20, context),
-                    ),
-                    Text(
-                      'Update The Namaz Timing',
-                      style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: responsiveText(16, context),
+            child: RefreshIndicator(
+              onRefresh: () => getData(),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: responsiveHeight(20, context),
+                      ),
+                      Text(
+                        'Update The Namaz Timing',
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: responsiveText(16, context),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: responsiveHeight(20, context),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FadeInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 300)),
-                          child: NamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
+                      SizedBox(
+                        height: responsiveHeight(20, context),
+                      ),
+                      GridView.count(
+                        physics: ScrollPhysics(),
+                        padding: EdgeInsets.only(
+                          left: responsiveWidth(16.5, context),
+                          right: responsiveWidth(16.5, context),
                         ),
-                        FadeInRight(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 300)),
-                          child: NamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FadeInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 600)),
-                          child: NamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                        FadeInRight(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 600)),
-                          child: NamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FadeInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 900)),
-                          child: NamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                        FadeInRight(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 900)),
-                          child: NamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FadeInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 1200)),
-                          child: NamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                        FadeInRight(
-                          preferences: AnimationPreferences(
-                              offset: Duration(milliseconds: 0),
-                              duration: Duration(milliseconds: 1200)),
-                          child: NamazTimingCardAdmin(
-                            name: 'Fajr',
-                            time: '06:30 PM-06:30 PM',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
+                        crossAxisSpacing: responsiveWidth(12, context),
+                        crossAxisCount: 2,
+                        shrinkWrap: true,
+                        children: [
+                          for (var namaz in _namaz_timing['timing']!)
+                            NamazTimingCardAdmin(
+                              start: TimeOfDay.fromDateTime(
+                                DateTime.parse(
+                                  namaz["start"]!,
+                                ),
+                              ),
+                              end: TimeOfDay.fromDateTime(
+                                DateTime.parse(
+                                  namaz["end"]!,
+                                ),
+                              ),
+                              name: namaz['name'].toString().toUpperCase(),
+                              time: TimeOfDay.fromDateTime(
+                                    DateTime.parse(
+                                      namaz["start"]!,
+                                    ),
+                                  ).format(context).toString() +
+                                  ' - ' +
+                                  TimeOfDay.fromDateTime(
+                                    DateTime.parse(
+                                      namaz["end"]!,
+                                    ),
+                                  ).format(context).toString(),
+                            ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ],
@@ -188,14 +185,18 @@ class _AdminScreenState extends State<AdminScreen> {
 }
 
 class NamazTimingCardAdmin extends StatelessWidget {
-  const NamazTimingCardAdmin({
-    Key? key,
-    required this.name,
-    required this.time,
-  }) : super(key: key);
+  NamazTimingCardAdmin(
+      {Key? key,
+      required this.name,
+      required this.time,
+      required this.start,
+      required this.end})
+      : super(key: key);
 
   final String name;
-  final String time;
+  TimeOfDay start;
+  TimeOfDay end;
+  String time;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +209,12 @@ class NamazTimingCardAdmin extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => MasjidTimingChangeScreen(name: name)));
+                  builder: (context) => MasjidTimingChangeScreen(
+                        name: name,
+                        time1: end,
+                        time2: start,
+                        uveshAdmin: true,
+                      )));
         },
         child: Container(
           width: responsiveWidth(165, context),
