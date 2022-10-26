@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:namaz_timing/constants.dart';
 import 'package:namaz_timing/responsive.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'navbar.dart';
 
@@ -13,7 +17,52 @@ class AllMosque extends StatefulWidget {
   State<AllMosque> createState() => _AllMosqueState();
 }
 
+var _allMosque;
+
 class _AllMosqueState extends State<AllMosque> {
+  Future<void> getData() async {
+    var response =
+        await http.get(Uri.parse('https://api.namaz.co.in/getMasjids'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      setState(() {
+        _allMosque = jsonDecode(response.body);
+      });
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load namaz');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getData() async {
+        var response =
+            await http.get(Uri.parse('https://api.namaz.co.in/getMasjids'));
+
+        if (response.statusCode == 200) {
+          // If the server did return a 200 OK response,
+          // then parse the JSON.
+          setState(() {
+            _allMosque = jsonDecode(response.body);
+          });
+        } else {
+          // If the server did not return a 200 OK response,
+          // then throw an exception.
+          throw Exception('Failed to load namaz');
+        }
+      }
+
+      await getData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,46 +120,27 @@ class _AllMosqueState extends State<AllMosque> {
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: responsiveHeight(11, context),
-                    ),
-                    MosqueCard(
-                      image: 'masjid1.png',
-                      masjidName: 'Jama Masjid',
-                    ),
-                    MosqueCard(
-                      image: 'masjid2.png',
-                      masjidName: 'Jamia Masjid',
-                    ),
-                    MosqueCard(
-                      image: 'masjid3.png',
-                      masjidName: 'Adina Mosque',
-                    ),
-                    MosqueCard(
-                      image: 'masjid4.png',
-                      masjidName: 'Atala Masjid',
-                    ),
-                    MosqueCard(
-                      image: 'masjid5.png',
-                      masjidName: 'Charminar',
-                    ),
-                    MosqueCard(
-                      image: 'masjid1.png',
-                      masjidName: 'Jama Masjid',
-                    ),
-                    MosqueCard(
-                      image: 'masjid2.png',
-                      masjidName: 'Jamia Masjid',
-                    ),
-                  ],
-                ),
-              ],
+            child: RefreshIndicator(
+              onRefresh: () => getData(),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: responsiveHeight(11, context),
+                      ),
+                      for (var mosque in _allMosque['Masjids']!)
+                        MosqueCard(
+                          image: mosque['img'],
+                          masjidName: mosque['name'],
+                          directions: mosque['map_link'],
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           NavBar(
@@ -127,10 +157,12 @@ class MosqueCard extends StatelessWidget {
     Key? key,
     required this.masjidName,
     required this.image,
+    required this.directions,
   }) : super(key: key);
 
   final String masjidName;
   final String image;
+  final String directions;
 
   @override
   Widget build(BuildContext context) {
@@ -158,8 +190,8 @@ class MosqueCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: Image.asset(
-                    'assets/$image',
+                  child: Image.network(
+                    image,
                     width: responsiveWidth(62, context),
                     height: responsiveHeight(62, context),
                   ),
@@ -184,23 +216,32 @@ class MosqueCard extends StatelessWidget {
                     SizedBox(
                       height: responsiveHeight(6, context),
                     ),
-                    Row(
-                      children: [
-                        Image.asset(
-                          'assets/location.png',
-                          width: responsiveText(7.5, context),
-                          height: responsiveHeight(8.74, context),
-                        ),
-                        Text(
-                          'Get Direction',
-                          style: GoogleFonts.inter(
-                            textStyle: TextStyle(
-                              color: Color(0xFF77B255),
-                              fontSize: responsiveText(10, context),
-                            ),
+                    GestureDetector(
+                      onTap: () async {
+                        if (await canLaunch(directions)) {
+                          await launch(directions);
+                        } else {
+                          throw 'Could not launch $directions';
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/location.png',
+                            width: responsiveText(7.5, context),
+                            height: responsiveHeight(8.74, context),
                           ),
-                        )
-                      ],
+                          Text(
+                            'Get Direction',
+                            style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                color: Color(0xFF77B255),
+                                fontSize: responsiveText(10, context),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

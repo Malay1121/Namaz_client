@@ -211,8 +211,8 @@ class NamazTimingCardAdmin extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => MasjidTimingChangeScreen(
                         name: name,
-                        time1: end,
-                        time2: start,
+                        time1: start,
+                        time2: end,
                         uveshAdmin: true,
                       )));
         },
