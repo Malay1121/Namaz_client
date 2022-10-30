@@ -3,6 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  geolocator_windows
+  modal_progress_hud_nsn
   url_launcher_windows
 )
 

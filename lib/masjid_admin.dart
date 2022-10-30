@@ -5,6 +5,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in_down.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/masjid_time_change.dart';
 import 'package:namaz_timing/responsive.dart';
 
@@ -19,6 +20,7 @@ class MasjidTimingScreen extends StatefulWidget {
 }
 
 var _namaz_timing;
+bool _showSpinner = true;
 
 class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
   Future<void> getData() async {
@@ -52,6 +54,7 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
           // then parse the JSON.
           setState(() {
             _namaz_timing = jsonDecode(response.body);
+            _showSpinner = false;
           });
         } else {
           // If the server did not return a 200 OK response,
@@ -69,117 +72,120 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
-      body: Column(
-        children: [
-          Container(
-            height: responsiveHeight(100, context),
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/tab_design.png'),
-                fit: BoxFit.fill,
+      body: ModalProgressHUD(
+        inAsyncCall: _showSpinner,
+        child: Column(
+          children: [
+            Container(
+              height: responsiveHeight(100, context),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/tab_design.png'),
+                  fit: BoxFit.fill,
+                ),
+                color: Color(0xFF77B255),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
               ),
-              color: Color(0xFF77B255),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: responsiveHeight(55, context),
-                left: responsiveWidth(15, context),
-                right: responsiveWidth(15, context),
-                bottom: responsiveHeight(18, context),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FadeInDown(
-                    child: Text(
-                      'Masjid Name',
-                      style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: responsiveText(18, context),
-                          fontWeight: FontWeight.w500,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: responsiveHeight(55, context),
+                  left: responsiveWidth(15, context),
+                  right: responsiveWidth(15, context),
+                  bottom: responsiveHeight(18, context),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FadeInDown(
+                      child: Text(
+                        'Masjid Name',
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: responsiveText(18, context),
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: responsiveHeight(20, context),
+                      ),
+                      Text(
+                        'Update Masjid Namaz Timing',
+                        style: GoogleFonts.inter(
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: responsiveText(16, context),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: responsiveHeight(20, context),
+                      ),
+                      GridView.count(
+                        physics: ScrollPhysics(),
+                        padding: EdgeInsets.only(
+                          left: responsiveWidth(16.5, context),
+                          right: responsiveWidth(16.5, context),
+                        ),
+                        crossAxisSpacing: responsiveWidth(12, context),
+                        crossAxisCount: 2,
+                        shrinkWrap: true,
+                        children: [
+                          for (var namaz in _namaz_timing['timing']!)
+                            MasjidNamazTimingCardAdmin(
+                              start: TimeOfDay.fromDateTime(
+                                DateTime.parse(
+                                  namaz["start"]!,
+                                ),
+                              ),
+                              end: TimeOfDay.fromDateTime(
+                                DateTime.parse(
+                                  namaz["end"]!,
+                                ),
+                              ),
+                              name: namaz['name'].toString().toUpperCase(),
+                              time: TimeOfDay.fromDateTime(
+                                    DateTime.parse(
+                                      namaz["start"]!,
+                                    ),
+                                  ).format(context).toString() +
+                                  ' - ' +
+                                  TimeOfDay.fromDateTime(
+                                    DateTime.parse(
+                                      namaz["end"]!,
+                                    ),
+                                  ).format(context).toString(),
+                            ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-          ),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: responsiveHeight(20, context),
-                    ),
-                    Text(
-                      'Update Masjid Namaz Timing',
-                      style: GoogleFonts.inter(
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: responsiveText(16, context),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: responsiveHeight(20, context),
-                    ),
-                    GridView.count(
-                      physics: ScrollPhysics(),
-                      padding: EdgeInsets.only(
-                        left: responsiveWidth(16.5, context),
-                        right: responsiveWidth(16.5, context),
-                      ),
-                      crossAxisSpacing: responsiveWidth(12, context),
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      children: [
-                        for (var namaz in _namaz_timing['timing']!)
-                          MasjidNamazTimingCardAdmin(
-                            start: TimeOfDay.fromDateTime(
-                              DateTime.parse(
-                                namaz["start"]!,
-                              ),
-                            ),
-                            end: TimeOfDay.fromDateTime(
-                              DateTime.parse(
-                                namaz["end"]!,
-                              ),
-                            ),
-                            name: namaz['name'].toString().toUpperCase(),
-                            time: TimeOfDay.fromDateTime(
-                                  DateTime.parse(
-                                    namaz["start"]!,
-                                  ),
-                                ).format(context).toString() +
-                                ' - ' +
-                                TimeOfDay.fromDateTime(
-                                  DateTime.parse(
-                                    namaz["end"]!,
-                                  ),
-                                ).format(context).toString(),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+            NavBar(
+              currentPage: 'Timing',
             ),
-          ),
-          NavBar(
-            currentPage: 'Timing',
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
