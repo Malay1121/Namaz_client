@@ -1,6 +1,5 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:namaz_timing/qiblah_compass.dart';
 
 import 'admin.dart';
 import 'home_screen.dart';
@@ -59,8 +58,8 @@ class _MainScreenState extends State<MainScreen> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => QiblahCompass()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Container()));
           },
           child: Text('Compass'),
         ),
