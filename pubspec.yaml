@@ -47,7 +47,6 @@ dependencies:
   modal_progress_hud_nsn: ^0.3.0
   flutter_qiblah: ^2.1.0
   flutter_svg: ^1.1.5
-  google_maps_flutter: ^2.2.1
 
 
 dev_dependencies:
