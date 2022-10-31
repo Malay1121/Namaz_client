@@ -211,6 +211,7 @@ class MosqueCard extends StatelessWidget {
                       image,
                       width: responsiveWidth(62, context),
                       height: responsiveHeight(62, context),
+                      fit: BoxFit.cover,
                     ),
                   ),
                   SizedBox(

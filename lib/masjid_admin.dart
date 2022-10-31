@@ -10,7 +10,6 @@ import 'package:namaz_timing/masjid_time_change.dart';
 import 'package:namaz_timing/responsive.dart';
 
 import 'constants.dart';
-import 'navbar.dart';
 
 class MasjidTimingScreen extends StatefulWidget {
   const MasjidTimingScreen({Key? key}) : super(key: key);
@@ -98,7 +97,7 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
                   bottom: responsiveHeight(18, context),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     FadeInDown(
                       child: Text(
@@ -180,9 +179,6 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
                   ),
                 ],
               ),
-            ),
-            NavBar(
-              currentPage: 'Timing',
             ),
           ],
         ),
