@@ -11,7 +11,9 @@ import 'package:namaz_timing/responsive.dart';
 import 'constants.dart';
 
 class AdminScreen extends StatefulWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+  const AdminScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<AdminScreen> createState() => _AdminScreenState();

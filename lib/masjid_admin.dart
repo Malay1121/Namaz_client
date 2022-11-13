@@ -12,7 +12,11 @@ import 'package:namaz_timing/responsive.dart';
 import 'constants.dart';
 
 class MasjidTimingScreen extends StatefulWidget {
-  const MasjidTimingScreen({Key? key}) : super(key: key);
+  const MasjidTimingScreen({
+    Key? key,
+    required this.masjidId,
+  }) : super(key: key);
+  final String masjidId;
 
   @override
   State<MasjidTimingScreen> createState() => _MasjidTimingScreenState();
@@ -23,8 +27,8 @@ bool _showSpinner = true;
 
 class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
   Future<void> getData() async {
-    var response =
-        await http.get(Uri.parse('https://api.namaz.co.in/getNamazTiming'));
+    var response = await http
+        .get(Uri.parse('https://api.namaz.co.in/getMasjid/${widget.masjidId}'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -45,8 +49,8 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getData() async {
-        var response =
-            await http.get(Uri.parse('https://api.namaz.co.in/getNamazTiming'));
+        var response = await http.get(
+            Uri.parse('https://api.namaz.co.in/getMasjid/${widget.masjidId}'));
 
         if (response.statusCode == 200) {
           // If the server did return a 200 OK response,
@@ -69,6 +73,7 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var namazKeys = _namaz_timing['timing'].keys;
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       body: ModalProgressHUD(
@@ -116,68 +121,75 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
               ),
             ),
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                children: [
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: responsiveHeight(20, context),
-                      ),
-                      Text(
-                        'Update Masjid Namaz Timing',
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: responsiveText(16, context),
+              child: RefreshIndicator(
+                onRefresh: () => getData(),
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: responsiveHeight(20, context),
+                        ),
+                        Text(
+                          'Update Masjid Namaz Timing',
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: responsiveText(16, context),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: responsiveHeight(20, context),
-                      ),
-                      GridView.count(
-                        physics: ScrollPhysics(),
-                        padding: EdgeInsets.only(
-                          left: responsiveWidth(16.5, context),
-                          right: responsiveWidth(16.5, context),
+                        SizedBox(
+                          height: responsiveHeight(20, context),
                         ),
-                        crossAxisSpacing: responsiveWidth(12, context),
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        children: [
-                          for (var namaz in _namaz_timing['timing']!)
-                            MasjidNamazTimingCardAdmin(
-                              start: TimeOfDay.fromDateTime(
-                                DateTime.parse(
-                                  namaz["start"]!,
+                        GridView.count(
+                          physics: ScrollPhysics(),
+                          padding: EdgeInsets.only(
+                            left: responsiveWidth(16.5, context),
+                            right: responsiveWidth(16.5, context),
+                          ),
+                          crossAxisSpacing: responsiveWidth(12, context),
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          children: [
+                            for (var namaz in namazKeys)
+                              MasjidNamazTimingCardAdmin(
+                                masjidId: widget.masjidId,
+                                start: TimeOfDay.fromDateTime(
+                                  DateTime.parse(
+                                    _namaz_timing['timing'][namaz]["azan_time"],
+                                  ),
                                 ),
-                              ),
-                              end: TimeOfDay.fromDateTime(
-                                DateTime.parse(
-                                  namaz["end"]!,
+                                end: TimeOfDay.fromDateTime(
+                                  DateTime.parse(
+                                    _namaz_timing['timing'][namaz]
+                                        ["jammat_time"],
+                                  ),
                                 ),
+                                name: namaz.toString().toUpperCase(),
+                                time: TimeOfDay.fromDateTime(
+                                      DateTime.parse(
+                                        _namaz_timing['timing'][namaz]
+                                            ["azan_time"],
+                                      ),
+                                    ).format(context).toString() +
+                                    ' - ' +
+                                    TimeOfDay.fromDateTime(
+                                      DateTime.parse(
+                                        _namaz_timing['timing'][namaz]
+                                            ["jammat_time"],
+                                      ),
+                                    ).format(context).toString(),
                               ),
-                              name: namaz['name'].toString().toUpperCase(),
-                              time: TimeOfDay.fromDateTime(
-                                    DateTime.parse(
-                                      namaz["start"]!,
-                                    ),
-                                  ).format(context).toString() +
-                                  ' - ' +
-                                  TimeOfDay.fromDateTime(
-                                    DateTime.parse(
-                                      namaz["end"]!,
-                                    ),
-                                  ).format(context).toString(),
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -188,18 +200,20 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
 }
 
 class MasjidNamazTimingCardAdmin extends StatelessWidget {
-  MasjidNamazTimingCardAdmin(
-      {Key? key,
-      required this.name,
-      required this.time,
-      required this.start,
-      required this.end})
-      : super(key: key);
+  MasjidNamazTimingCardAdmin({
+    Key? key,
+    required this.name,
+    required this.time,
+    required this.start,
+    required this.end,
+    required this.masjidId,
+  }) : super(key: key);
 
   final String name;
   TimeOfDay start;
   TimeOfDay end;
   String time;
+  final String masjidId;
 
   @override
   Widget build(BuildContext context) {

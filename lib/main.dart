@@ -1,9 +1,9 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'admin.dart';
-import 'home_screen.dart';
-import 'masjid_admin.dart';
+import 'package:namaz_timing/home_screen.dart';
+import 'package:namaz_timing/login.dart';
+import 'package:namaz_timing/responsive.dart';
+import 'package:smooth_compass/utils/src/compass_ui.dart';
 
 void main() => runApp(new MyApp());
 
@@ -59,26 +59,51 @@ class _MainScreenState extends State<MainScreen> {
         GestureDetector(
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Container()));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Center(
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'assets/compass.png',
+                          height: responsiveText(275, context),
+                          width: responsiveText(275, context),
+                        ),
+                        SizedBox(
+                          height: responsiveText(275, context),
+                          width: responsiveText(275, context),
+                          child: SmoothCompass(
+                            rotationSpeed: 200,
+                            height: responsiveText(200, context),
+                            width: responsiveText(200, context),
+                            compassAsset: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/needle.png"),
+                                ),
+                              ),
+                            ),
+                            compassBuilder: (context,
+                                AsyncSnapshot<CompassModel>? compassData,
+                                Widget compassAsset) {
+                              return compassAsset;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ));
           },
           child: Text('Compass'),
         ),
         GestureDetector(
           child: Text(
-            'Go to Masjid Admin',
+            'Admin Login',
           ),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MasjidTimingScreen()));
-          },
-        ),
-        GestureDetector(
-          child: Text(
-            'Go to Uvesh wala admin',
-          ),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AdminScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Login()));
           },
         ),
         GestureDetector(

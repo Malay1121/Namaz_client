@@ -352,7 +352,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                 height: responsiveHeight(4, context),
                               ),
                               Text(
-                                'Jammat Time - 04:15 AM',
+                                'Jammat Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['jammat_time'])).format(context)}',
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
                                     color: Color(0xFFDADADA),

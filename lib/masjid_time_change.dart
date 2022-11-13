@@ -17,12 +17,14 @@ class MasjidTimingChangeScreen extends StatefulWidget {
     this.uveshAdmin = false,
     required this.time1,
     required this.time2,
+    this.masjidId = '',
   }) : super(key: key);
 
   final String name;
   TimeOfDay time1;
   TimeOfDay time2;
   final bool uveshAdmin;
+  String masjidId;
 
   @override
   State<MasjidTimingChangeScreen> createState() =>
@@ -281,7 +283,19 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                                     "start": final1.toString(),
                                     "end": final2.toString(),
                                   }))
-                              : null;
+                              : http.put(
+                                  Uri.parse(
+                                      'https://api.namaz.co.in/updateMasjidNamazTime/${widget.masjidId}/${widget.name.toLowerCase()}'),
+                                  headers: <String, String>{
+                                    'Content-Type':
+                                        'application/json; charset=UTF-8',
+                                  },
+                                  body: jsonEncode({
+                                    "azan_time": final1.toString(),
+                                    "jammat_time": final2.toString(),
+                                  }),
+                                );
+                          ;
                           Navigator.pop(context);
                         },
                         child: Container(
