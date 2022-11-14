@@ -136,6 +136,7 @@ class _LoginState extends State<Login> {
                       Uri.parse('https://api.namaz.co.in/login'),
                       headers: <String, String>{
                         'Content-Type': 'application/json; charset=UTF-8',
+                        'x-api-key': 'Addd something'
                       },
                       body: jsonEncode({
                         'email': _emailController.text,

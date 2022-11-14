@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         showLoader: true,
         loaderColor: Color(0xFF54AEB4),
         navigator: MainScreen(),
-        durationInSeconds: 5,
+        durationInSeconds: 2,
       ),
     );
   }
