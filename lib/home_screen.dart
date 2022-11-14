@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/constants.dart';
+import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
 
 import 'navbar.dart';
@@ -17,17 +18,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-var _namaz_timing = {
-  "list": [
-    {
-      "name": "Masjid-E-Amin",
-      "img": "https://i.ibb.co/x7T8x0P/2019-06-04.jpg",
-      "timing": {
-        "zohr": {"jammat_time": "2022-10-30T00:28:26.650000"}
-      }
-    },
-  ]
-};
+var _namaz_timing;
 bool _showSpiner = true;
 
 class _HomePageState extends State<HomePage> {
@@ -39,7 +30,7 @@ class _HomePageState extends State<HomePage> {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       setState(() {
-        _namaz_timing = jsonDecode(response.body);
+        _namaz_timing = response.body;
       });
     } else {
       // If the server did not return a 200 OK response,
@@ -60,9 +51,8 @@ class _HomePageState extends State<HomePage> {
         if (response.statusCode == 200) {
           // If the server did return a 200 OK response,
           // then parse the JSON
-
           setState(() {
-            _namaz_timing = jsonDecode(response.body);
+            _namaz_timing = response.body;
             _showSpiner = false;
           });
         } else {
@@ -79,7 +69,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // var _key = _namaz_timing['list']![0]['timing'].keys;
+    // var _key = _namaz_timing['list']![0]['timing'];
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       body: ModalProgressHUD(
@@ -164,7 +154,8 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _namaz_timing['list']![0]['name'].toString(),
+                            // _namaz_timing['list'][0]['name'].toString(),
+                            '',
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                 color: Colors.white,
@@ -190,7 +181,8 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    [0].toString() + ' Prayer',
+                                    // _key.keys[0].toString() + ' Prayer',
+                                    '',
                                     style: GoogleFonts.inter(
                                       textStyle: TextStyle(
                                         color: Colors.white,
@@ -247,48 +239,12 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Column(
                     children: [
-                      NamazCard(
-                        image: 'masjid1.png',
-                        masjidName: 'Jama Masjid',
-                        time: '12:30 PM',
-                        namaz: 'Dhuhr',
-                      ),
-                      NamazCard(
-                        image: 'masjid2.png',
-                        masjidName: 'Jamia Masjid',
-                        time: '12:45 PM',
-                        namaz: 'Dhuhr',
-                      ),
-                      NamazCard(
-                        image: 'masjid3.png',
-                        masjidName: 'Adina Mosque',
-                        time: '01:00 PM',
-                        namaz: 'Dhuhr',
-                      ),
-                      NamazCard(
-                        image: 'masjid4.png',
-                        masjidName: 'Atala Masjid',
-                        time: '01:15 PM',
-                        namaz: 'Dhuhr',
-                      ),
-                      NamazCard(
-                        image: 'masjid5.png',
-                        masjidName: 'Charminar',
-                        time: '01:30 PM',
-                        namaz: 'Dhuhr',
-                      ),
-                      NamazCard(
-                        image: 'masjid1.png',
-                        masjidName: 'Jama Masjid',
-                        time: '1:45 PM',
-                        namaz: 'Dhuhr',
-                      ),
-                      NamazCard(
-                        image: 'masjid2.png',
-                        masjidName: 'Jamia Masjid',
-                        time: '02:00 PM',
-                        namaz: 'Dhuhr',
-                      ),
+                      // for (var namaz in namaz_timing['list'])
+                      //   NamazCard(
+                      //     image: namaz['img'],
+                      //     masjidName: namaz['name'],
+                      //     timing: namaz['timing'],
+                      //   ),
                     ],
                   ),
                 ],
@@ -309,17 +265,16 @@ class NamazCard extends StatelessWidget {
     Key? key,
     required this.masjidName,
     required this.image,
-    required this.time,
-    required this.namaz,
+    required this.timing,
   }) : super(key: key);
 
   final String masjidName;
   final String image;
-  final String time;
-  final String namaz;
+  final Map timing;
 
   @override
   Widget build(BuildContext context) {
+    // dynamic key = timing.keys;
     return Padding(
       padding: EdgeInsets.only(
         bottom: responsiveHeight(11, context),
@@ -344,8 +299,8 @@ class NamazCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: Image.asset(
-                    'assets/$image',
+                  child: Image.network(
+                    '$image',
                     width: responsiveWidth(62, context),
                     height: responsiveHeight(62, context),
                   ),
@@ -369,7 +324,12 @@ class NamazCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      time,
+                      // TimeOfDay.fromDateTime(
+                      //   DateTime.parse(
+                      //     timing[key[0].toString()]['jammat_time'],
+                      //   ),
+                      // ).format(context).toString(),
+                      'Hehe',
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -382,7 +342,8 @@ class NamazCard extends StatelessWidget {
                       height: responsiveHeight(6, context),
                     ),
                     Text(
-                      namaz,
+                      // key[0].toString(),
+                      'hehe',
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                           color: Color(0xFFA3A3A3),
