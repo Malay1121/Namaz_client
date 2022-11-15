@@ -8,6 +8,8 @@ import 'package:flutter_animator/widgets/fading_entrances/fade_in_down.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:namaz_timing/admin.dart';
+import 'package:namaz_timing/masjid_admin.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -314,7 +316,13 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                                   }),
                                 );
                           ;
-                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      widget.uveshAdmin == true
+                                          ? AdminScreen()
+                                          : MasjidTimingScreen()));
                         },
                         child: Container(
                           height: responsiveHeight(56, context),

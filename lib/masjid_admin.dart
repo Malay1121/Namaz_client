@@ -112,7 +112,7 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
                   children: [
                     FadeInDown(
                       child: Text(
-                        'Masjid Name',
+                        _namaz_timing['name'].toString(),
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(
                             color: Colors.white,
