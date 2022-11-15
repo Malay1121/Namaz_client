@@ -63,7 +63,6 @@ class _AdminScreenState extends State<AdminScreen> {
 
       await getData();
     });
-    print(_namaz_timing);
   }
 
   @override

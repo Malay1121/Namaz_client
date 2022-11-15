@@ -138,7 +138,6 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          print(widget.time1);
                           Navigator.of(context).push(
                             showPicker(
                               context: context,
@@ -264,7 +263,6 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                                 .replaceAll(' ', ''));
                             final1 =
                                 DateTime(2022, 11, 1, dt1.hour, dt1.minute);
-                            print(final1);
                             var df2 = DateFormat("h:mma");
                             var dt2 = df2.parse(widget.time2
                                 .format(context)
@@ -274,7 +272,6 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                               final2 =
                                   DateTime(2022, 11, 1, dt2.hour, dt2.minute);
                             });
-                            print(final2);
                           });
                           SharedPreferences preference =
                               await SharedPreferences.getInstance();

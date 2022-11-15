@@ -143,7 +143,6 @@ class _LoginState extends State<Login> {
                         'password': _passwordController.text
                       }));
                   var body = jsonDecode(response.body);
-                  print(body);
                   SharedPreferences preference = await SharedPreferences.getInstance();
 
 

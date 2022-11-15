@@ -28,7 +28,6 @@ bool _showSpinner = true;
 class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
   Future<void> getData() async {
     var preference = await SharedPreferences.getInstance();
-    print(preference.getString('masjidID').toString() + 'abcdefu');
     var response = await http.get(
       Uri.parse(
           'https://api.namaz.co.in/getMasjid/${preference!.getString('masjidId')}'),
@@ -65,7 +64,6 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
             _namaz_timing = jsonDecode(response.body);
             _showSpinner = false;
           });
-          print(_namaz_timing['timing'].toString() + 'abcdefu');
         } else {
           // If the server did not return a 200 OK response,
           // then throw an exception.

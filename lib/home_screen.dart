@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> {
             _namaz_timing = jsonDecode(response.body);
             _showSpiner = false;
           });
-          print(_namaz_timing.toString() + 'abcdefu');
         } else {
           // If the server did not return a 200 OK response,
           // then throw an exception.

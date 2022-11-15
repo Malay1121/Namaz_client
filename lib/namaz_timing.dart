@@ -64,7 +64,6 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
 
       await getData();
     });
-    print(namaz_timing);
   }
 
   @override
