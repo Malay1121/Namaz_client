@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:namaz_timing/responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MasjidTimingChangeScreen extends StatefulWidget {
   MasjidTimingChangeScreen({
@@ -135,6 +136,7 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                       ),
                       GestureDetector(
                         onTap: () async {
+                          print(widget.time1);
                           Navigator.of(context).push(
                             showPicker(
                               context: context,
@@ -142,13 +144,6 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                               onChange: (val) {
                                 setState(() {
                                   widget.time1 = val;
-                                  var df = DateFormat("h:mma");
-                                  var dt = df.parse(widget.time1
-                                      .format(context)
-                                      .replaceAll(' ', ''));
-                                  final1 =
-                                      DateTime(2022, 11, 1, dt.hour, dt.minute);
-                                  print(final1);
                                 });
                               },
                             ),
@@ -213,16 +208,6 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                               value: widget.time2,
                               onChange: (val) {
                                 widget.time2 = val;
-                                var df = DateFormat("h:mma");
-                                var dt = df.parse(widget.time2
-                                    .format(context)
-                                    .replaceAll(' ', ''));
-
-                                setState(() {
-                                  final2 =
-                                      DateTime(2022, 11, 1, dt.hour, dt.minute);
-                                });
-                                print(final2);
                               },
                             ),
                           );
@@ -270,6 +255,27 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                       ),
                       GestureDetector(
                         onTap: () async {
+                          setState(() {
+                            var df1 = DateFormat("h:mma");
+                            var dt1 = df1.parse(widget.time1
+                                .format(context)
+                                .replaceAll(' ', ''));
+                            final1 =
+                                DateTime(2022, 11, 1, dt1.hour, dt1.minute);
+                            print(final1);
+                            var df2 = DateFormat("h:mma");
+                            var dt2 = df2.parse(widget.time2
+                                .format(context)
+                                .replaceAll(' ', ''));
+
+                            setState(() {
+                              final2 =
+                                  DateTime(2022, 11, 1, dt2.hour, dt2.minute);
+                            });
+                            print(final2);
+                          });
+                          SharedPreferences preference =
+                              await SharedPreferences.getInstance();
                           widget.uveshAdmin == true
                               ? await http.post(
                                   Uri.parse(
@@ -277,22 +283,34 @@ class _MasjidTimingChangeScreenState extends State<MasjidTimingChangeScreen> {
                                   headers: <String, String>{
                                     'Content-Type':
                                         'application/json; charset=UTF-8',
+                                    'x-api-key':
+                                        preference.getString('_id').toString(),
                                   },
                                   body: jsonEncode({
                                     "name": widget.name.toLowerCase(),
-                                    "start": final1.toString(),
-                                    "end": final2.toString(),
+                                    "start": final1.toString() == 'null'
+                                        ? widget.time1
+                                        : final1.toString(),
+                                    "end": final2.toString() == 'null'
+                                        ? widget.time2
+                                        : final2.toString(),
                                   }))
                               : http.put(
                                   Uri.parse(
-                                      'https://api.namaz.co.in/updateMasjidNamazTime/${widget.masjidId}/${widget.name.toLowerCase()}'),
+                                      'https://api.namaz.co.in/updateMasjidNamazTime/${preference.getString('masjidId')}/${widget.name.toLowerCase()}'),
                                   headers: <String, String>{
                                     'Content-Type':
                                         'application/json; charset=UTF-8',
+                                    'x-api-key':
+                                        preference.getString('_id').toString(),
                                   },
                                   body: jsonEncode({
-                                    "azan_time": final1.toString(),
-                                    "jammat_time": final2.toString(),
+                                    "azan_time": final1.toString() == 'null'
+                                        ? widget.time1
+                                        : final1.toString(),
+                                    "jammat_time": final2.toString() == 'null'
+                                        ? widget.time2
+                                        : final2.toString(),
                                   }),
                                 );
                           ;

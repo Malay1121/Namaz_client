@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:namaz_timing/home_screen.dart';
 import 'package:namaz_timing/login.dart';
 import 'package:namaz_timing/responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_compass/utils/src/compass_ui.dart';
 
 void main() => runApp(new MyApp());

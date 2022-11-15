@@ -6,29 +6,33 @@ import 'package:flutter_animator/widgets/fading_entrances/fade_in_down.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:namaz_timing/main.dart';
 import 'package:namaz_timing/masjid_time_change.dart';
 import 'package:namaz_timing/responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
 
 class MasjidTimingScreen extends StatefulWidget {
   const MasjidTimingScreen({
     Key? key,
-    required this.masjidId,
   }) : super(key: key);
-  final String masjidId;
 
   @override
   State<MasjidTimingScreen> createState() => _MasjidTimingScreenState();
 }
 
-var _namaz_timing;
+dynamic _namaz_timing;
 bool _showSpinner = true;
 
 class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
   Future<void> getData() async {
-    var response = await http
-        .get(Uri.parse('https://api.namaz.co.in/getMasjid/${widget.masjidId}'));
+    var preference = await SharedPreferences.getInstance();
+    print(preference.getString('masjidID').toString() + 'abcdefu');
+    var response = await http.get(
+      Uri.parse(
+          'https://api.namaz.co.in/getMasjid/${preference!.getString('masjidId')}'),
+    );
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -49,16 +53,19 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getData() async {
-        var response = await http.get(
-            Uri.parse('https://api.namaz.co.in/getMasjid/${widget.masjidId}'));
+        var preference = await SharedPreferences.getInstance();
+        var response = await http.get(Uri.parse(
+            'https://api.namaz.co.in/getMasjid/${preference.getString('masjidId')}'));
 
         if (response.statusCode == 200) {
-          // If the server did return a 200 OK response,
+          // If the serve
+          //  r did return a 200 OK response,
           // then parse the JSON.
           setState(() {
             _namaz_timing = jsonDecode(response.body);
             _showSpinner = false;
           });
+          print(_namaz_timing['timing'].toString() + 'abcdefu');
         } else {
           // If the server did not return a 200 OK response,
           // then throw an exception.
@@ -68,7 +75,6 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
 
       await getData();
     });
-    print(_namaz_timing);
   }
 
   @override
@@ -157,7 +163,6 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
                           children: [
                             for (var namaz in namazKeys)
                               MasjidNamazTimingCardAdmin(
-                                masjidId: widget.masjidId,
                                 start: TimeOfDay.fromDateTime(
                                   DateTime.parse(
                                     _namaz_timing['timing'][namaz]["azan_time"],
@@ -172,14 +177,14 @@ class _MasjidTimingScreenState extends State<MasjidTimingScreen> {
                                 name: namaz.toString().toUpperCase(),
                                 time: TimeOfDay.fromDateTime(
                                       DateTime.parse(
-                                        _namaz_timing['timing'][namaz]
+                                        _namaz_timing!['timing'][namaz]
                                             ["azan_time"],
                                       ),
                                     ).format(context).toString() +
                                     ' - ' +
                                     TimeOfDay.fromDateTime(
                                       DateTime.parse(
-                                        _namaz_timing['timing'][namaz]
+                                        _namaz_timing!['timing'][namaz]
                                             ["jammat_time"],
                                       ),
                                     ).format(context).toString(),
@@ -206,14 +211,12 @@ class MasjidNamazTimingCardAdmin extends StatelessWidget {
     required this.time,
     required this.start,
     required this.end,
-    required this.masjidId,
   }) : super(key: key);
 
   final String name;
   TimeOfDay start;
   TimeOfDay end;
   String time;
-  final String masjidId;
 
   @override
   Widget build(BuildContext context) {

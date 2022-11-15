@@ -7,6 +7,7 @@ import 'package:namaz_timing/admin.dart';
 import 'package:namaz_timing/main.dart';
 import 'package:namaz_timing/masjid_admin.dart';
 import 'package:namaz_timing/responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -136,7 +137,6 @@ class _LoginState extends State<Login> {
                       Uri.parse('https://api.namaz.co.in/login'),
                       headers: <String, String>{
                         'Content-Type': 'application/json; charset=UTF-8',
-                        'x-api-key': 'Addd something'
                       },
                       body: jsonEncode({
                         'email': _emailController.text,
@@ -144,14 +144,23 @@ class _LoginState extends State<Login> {
                       }));
                   var body = jsonDecode(response.body);
                   print(body);
+                  SharedPreferences preference = await SharedPreferences.getInstance();
+
 
                   if (body['detail'] != "email or password incorrect") {
+                    preference!.setString('_id', body['_id']);
+                    preference!.setString('name', body['name']);
+                    preference!.setString('password', body['password']);
+                    preference!.setString('masjidId', body['masjidId']);
+                    preference!.setString('email', body['email']);
+                    preference!.setBool('masjidAdmin', body['masjidAdmin']);
+                    preference!.setBool('namazAdmin', body['namazAdmin']);
+
                     if (body['masjidAdmin'] == true) {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MasjidTimingScreen(
-                                  masjidId: body['masjidId'])));
+                              builder: (context) => MasjidTimingScreen()));
                     } else if (body['namazAdmin'] == true) {
                       Navigator.pushReplacement(
                           context,
