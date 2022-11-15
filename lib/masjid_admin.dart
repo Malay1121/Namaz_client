@@ -22,7 +22,58 @@ class MasjidTimingScreen extends StatefulWidget {
   State<MasjidTimingScreen> createState() => _MasjidTimingScreenState();
 }
 
-dynamic _namaz_timing;
+dynamic _namaz_timing = {
+  "timing": [
+    {
+      "name": "fajr",
+      "start": "2022-11-05T05:26:28.331000",
+      "end": "2022-11-05T06:40:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "sunrise",
+      "start": "2022-11-05T06:41:28.331000",
+      "end": "2022-11-05T07:01:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "zawal",
+      "start": "2022-11-05T12:00:28.331000",
+      "end": "2022-11-05T12:22:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "zohr",
+      "start": "2022-11-05T12:23:28.331000",
+      "end": "2022-11-05T16:27:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "asr",
+      "start": "2022-11-05T16:28:28.331000",
+      "end": "2022-11-05T18:03:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "sunset",
+      "start": "2022-11-05T17:43:28.331000",
+      "end": "2022-11-05T18:02:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "magrib",
+      "start": "2022-11-05T18:03:28.331000",
+      "end": "2022-11-05T19:18:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "isha",
+      "start": "2022-11-05T19:19:28.331000",
+      "end": "2022-11-05T05:25:28.331000",
+      "city": "surat"
+    }
+  ]
+};
 bool _showSpinner = true;
 
 class _MasjidTimingScreenState extends State<MasjidTimingScreen> {

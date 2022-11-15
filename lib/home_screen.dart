@@ -17,7 +17,35 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-Map _namaz_timing = {};
+dynamic _namaz_timing = {
+  "list": [
+    {
+      "name": "Masjid-E-Amin",
+      "img": "https://i.ibb.co/x7T8x0P/2019-06-04.jpg",
+      "timing": {
+        "isha": {"jammat_time": "2022-10-30T00:28:26.650000"}
+      }
+    },
+    {
+      "name": "Masjid-E-Noori",
+      "img": "https://i.ibb.co/5x6MQN2/2022-09-06.jpg",
+      "timing": {
+        "isha": {"jammat_time": "2022-10-30T00:28:26.680000"}
+      }
+    },
+    {
+      "name": "Masjid-E-Bibima",
+      "img": "https://i.ibb.co/mvYsmKN/2022-03-05.jpg",
+      "timing": {
+        "isha": {"jammat_time": "2022-10-30T00:28:26.680000"}
+      }
+    }
+  ],
+  "time": {
+    "start": "2022-11-05T19:19:28.331000",
+    "end": "2022-11-05T05:25:28.331000"
+  }
+};
 bool _showSpiner = true;
 
 class _HomePageState extends State<HomePage> {

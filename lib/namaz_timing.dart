@@ -18,7 +18,58 @@ class NamazTimingScreen extends StatefulWidget {
   State<NamazTimingScreen> createState() => _NamazTimingScreenState();
 }
 
-var namaz_timing;
+dynamic namaz_timing = {
+  "timing": [
+    {
+      "name": "fajr",
+      "start": "2022-11-05T05:26:28.331000",
+      "end": "2022-11-05T06:40:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "sunrise",
+      "start": "2022-11-05T06:41:28.331000",
+      "end": "2022-11-05T07:01:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "zawal",
+      "start": "2022-11-05T12:00:28.331000",
+      "end": "2022-11-05T12:22:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "zohr",
+      "start": "2022-11-05T12:23:28.331000",
+      "end": "2022-11-05T16:27:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "asr",
+      "start": "2022-11-05T16:28:28.331000",
+      "end": "2022-11-05T18:03:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "sunset",
+      "start": "2022-11-05T17:43:28.331000",
+      "end": "2022-11-05T18:02:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "magrib",
+      "start": "2022-11-05T18:03:28.331000",
+      "end": "2022-11-05T19:18:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "isha",
+      "start": "2022-11-05T19:19:28.331000",
+      "end": "2022-11-05T05:25:28.331000",
+      "city": "surat"
+    }
+  ]
+};
 bool _showSpiner = true;
 
 class _NamazTimingScreenState extends State<NamazTimingScreen> {
@@ -30,7 +81,7 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       setState(() {
-        namaz_timing = jsonDecode(response.body);
+        namaz_timing = response.body;
       });
     } else {
       // If the server did not return a 200 OK response,
@@ -52,7 +103,7 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
           // If the server did return a 200 OK response,
           // then parse the JSON.
           setState(() {
-            namaz_timing = jsonDecode(response.body);
+            namaz_timing = json.decode(response.body);
             _showSpiner = false;
           });
         } else {
