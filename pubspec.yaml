@@ -47,9 +47,20 @@ dependencies:
   modal_progress_hud_nsn: ^0.3.0
   smooth_compass: ^1.0.5
   shared_preferences: ^2.0.15
+  rename_app: ^1.1.0
 
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.10.0"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/app_icon.png"
+  min_sdk_android: 16
+  web:
+    generate: true
+    image_path: "assets/app_icon.png"
   flutter_test:
     sdk: flutter
 
