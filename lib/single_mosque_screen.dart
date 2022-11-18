@@ -6,8 +6,10 @@ import 'package:flutter_animator/animation/animation_preferences.dart';
 import 'package:flutter_animator/widgets/flippers/flip_in_y.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/all_mosque.dart';
+import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -58,6 +60,9 @@ dynamic _mosqueData = {
 };
 bool _showSpinner = true;
 
+var _currentNamaz;
+var _currentNamazName;
+
 class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
   Future<void> getData() async {
     var response = await http
@@ -75,6 +80,9 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
       throw Exception('Failed to load namaz');
     }
   }
+
+  List list = [];
+  List _key = [];
 
   @override
   void initState() {
@@ -100,12 +108,37 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
       }
 
       await getData();
+      for (var namazType in _mosqueData['timing'].keys.toList()) {
+        list.add(DateFormat.Hm()
+            .format(DateTime.parse(
+                _mosqueData['timing'][namazType.toString()]['jammat_time']))
+            .toString());
+        _key.add(namazType);
+      }
+
+      setState(() {
+        _currentNamaz = list.reduce((a, b) =>
+            a.difference(DateFormat.Hm().format(DateTime.now())).abs() <
+                    b.difference(DateFormat.Hm().format(DateTime.now())).abs()
+                ? a
+                : b);
+        _currentNamazName = _key[list.indexOf(_currentNamaz)];
+      });
     });
+    for (var namazType in _mosqueData['timing'].keys.toList()) {
+      print(DateFormat.Hm()
+              .format(DateTime.parse(
+                  _mosqueData['timing'][namazType.toString()]['jammat_time']))
+              .toString() +
+          'asduyga');
+    }
+    print(list.toString() + 'asduyga');
   }
 
   @override
   Widget build(BuildContext context) {
     var _mosqueKeys = _mosqueData['timing'].keys;
+
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       body: ModalProgressHUD(
@@ -159,7 +192,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Jama Masjid',
+                                      _mosqueData['name'].toString(),
                                       style: GoogleFonts.inter(
                                         textStyle: TextStyle(
                                           color: Colors.white,
@@ -186,7 +219,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'Dhuhr Prayer ',
+                                              _currentNamazName,
                                               style: GoogleFonts.inter(
                                                 textStyle: TextStyle(
                                                   color: Colors.white,
