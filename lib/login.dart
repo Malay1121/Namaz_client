@@ -21,6 +21,72 @@ TextEditingController _passwordController = TextEditingController();
 
 class _LoginState extends State<Login> {
   @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+
+        if (preferences.getString('email') != null &&
+            preferences.getString('password') != null &&
+            preferences.getString('password') != 'null' &&
+            preferences.getString('email') != 'null') {
+          dynamic response =
+              await http.post(Uri.parse('https://api.namaz.co.in/login'),
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+                  body: jsonEncode({
+                    'email': preferences.getString('email'),
+                    'password': preferences.getString('password')
+                  }));
+          var body = jsonDecode(response.body);
+          SharedPreferences preference = await SharedPreferences.getInstance();
+
+          if (body['detail'] != "email or password incorrect") {
+            preference!.setString('_id', body['_id']);
+            preference!.setString('name', body['name']);
+            preference!.setString('password', body['password']);
+            preference!.setString('masjidId', body['masjidId']);
+            preference!.setString('email', body['email']);
+            preference!.setBool('masjidAdmin', body['masjidAdmin']);
+            preference!.setBool('namazAdmin', body['namazAdmin']);
+
+            if (body['masjidAdmin'] == true) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MasjidTimingScreen()));
+            } else if (body['namazAdmin'] == true) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => AdminScreen()));
+            }
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return Center(
+                  child: Text(
+                    'Wrong Email or Password!',
+                    style: GoogleFonts.inter(
+                      textStyle: TextStyle(
+                        color: Color(0xFF77B255),
+                        fontSize: responsiveText(20, context),
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        }
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     var _mediaQuery = MediaQuery.of(context).size;
     return SafeArea(
@@ -143,8 +209,8 @@ class _LoginState extends State<Login> {
                         'password': _passwordController.text
                       }));
                   var body = jsonDecode(response.body);
-                  SharedPreferences preference = await SharedPreferences.getInstance();
-
+                  SharedPreferences preference =
+                      await SharedPreferences.getInstance();
 
                   if (body['detail'] != "email or password incorrect") {
                     preference!.setString('_id', body['_id']);
