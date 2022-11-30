@@ -11,6 +11,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/all_mosque.dart';
 import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
+import 'package:smooth_compass/utils/src/compass_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'constants.dart';
@@ -63,6 +64,59 @@ bool _showSpinner = true;
 var _currentNamaz;
 var _currentNamazName;
 
+dynamic getTime = {
+  "timing": [
+    {
+      "name": "fajr",
+      "start": "2022-11-05T05:26:28.331000",
+      "end": "2022-11-05T06:40:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "sunrise",
+      "start": "2022-11-05T06:41:28.331000",
+      "end": "2022-11-05T07:01:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "zawal",
+      "start": "2022-11-05T12:00:28.331000",
+      "end": "2022-11-05T12:22:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "zohr",
+      "start": "2022-11-05T12:23:28.331000",
+      "end": "2022-11-05T16:27:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "asr",
+      "start": "2022-11-05T16:28:28.331000",
+      "end": "2022-11-05T18:03:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "sunset",
+      "start": "2022-11-05T17:43:28.331000",
+      "end": "2022-11-05T18:02:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "magrib",
+      "start": "2022-11-05T18:03:28.331000",
+      "end": "2022-11-05T19:18:28.331000",
+      "city": "surat"
+    },
+    {
+      "name": "isha",
+      "start": "2022-11-05T19:19:28.331000",
+      "end": "2022-11-05T05:25:28.331000",
+      "city": "surat"
+    }
+  ]
+};
+
 class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
   Future<void> getData() async {
     var response = await http
@@ -83,6 +137,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
 
   List list = [];
   List _key = [];
+  List allList = [];
 
   @override
   void initState() {
@@ -109,30 +164,37 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
 
       await getData();
       for (var namazType in _mosqueData['timing'].keys.toList()) {
-        list.add(DateFormat.Hm()
-            .format(DateTime.parse(
-                _mosqueData['timing'][namazType.toString()]['jammat_time']))
-            .toString());
+        var now = DateTime.now();
+
+        var time = DateTime.parse(
+            _mosqueData['timing'][namazType.toString()]['jammat_time']);
+        var namazTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          time.hour,
+          time.minute,
+          time.second,
+        );
+        allList.add(namazTime);
+        if (DateTime.now().isBefore(namazTime) == true) {
+          list.add(namazTime);
+        }
+
         _key.add(namazType);
+        print(list.toString() + 'asduyga' + _key.toString());
       }
 
       setState(() {
         _currentNamaz = list.reduce((a, b) =>
-            a.difference(DateFormat.Hm().format(DateTime.now())).abs() <
-                    b.difference(DateFormat.Hm().format(DateTime.now())).abs()
+            a.difference(DateTime.now()).abs() <
+                    b.difference(DateTime.now()).abs()
                 ? a
                 : b);
-        _currentNamazName = _key[list.indexOf(_currentNamaz)];
+        _currentNamazName = _key[allList.indexOf(_currentNamaz)];
       });
     });
-    for (var namazType in _mosqueData['timing'].keys.toList()) {
-      print(DateFormat.Hm()
-              .format(DateTime.parse(
-                  _mosqueData['timing'][namazType.toString()]['jammat_time']))
-              .toString() +
-          'asduyga');
-    }
-    print(list.toString() + 'asduyga');
+    
   }
 
   @override
@@ -154,15 +216,20 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                     SizedBox(
                       height: responsiveHeight(338, context),
                     ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
-                      ),
-                      child: Image.network(
-                        _mosqueData['background_img'].toString(),
-                        height: responsiveHeight(278, context),
-                        width: double.infinity,
+                    Container(
+                      height: responsiveHeight(278, context),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                        ),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            _mosqueData['background_img'].toString(),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -202,7 +269,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: responsiveHeight(14, context),
+                                      height: responsiveHeight(10, context),
                                     ),
                                     Row(
                                       children: [
@@ -219,7 +286,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              _currentNamazName,
+                                              _currentNamazName.toString(),
                                               style: GoogleFonts.inter(
                                                 textStyle: TextStyle(
                                                   color: Colors.white,
@@ -229,7 +296,14 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                               ),
                                             ),
                                             Text(
-                                              '12:30 PM',
+                                              TimeOfDay.fromDateTime(
+                                                DateTime.parse(_mosqueData[
+                                                                'timing'][
+                                                            _currentNamazName
+                                                                .toString()]
+                                                        ['jammat_time']
+                                                    .toString()),
+                                              ).format(context).toString(),
                                               style: GoogleFonts.inter(
                                                 textStyle: TextStyle(
                                                   color: Color(0xFF77B255),

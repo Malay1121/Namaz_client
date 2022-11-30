@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/constants.dart';
+import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
 
 import 'navbar.dart';
@@ -47,6 +48,10 @@ dynamic _namaz_timing = {
   }
 };
 bool _showSpiner = true;
+List allList = [];
+List list = [];
+var _currentMasjid;
+var _currentMasjidName = '';
 
 class _HomePageState extends State<HomePage> {
   Future getData() async {
@@ -83,6 +88,34 @@ class _HomePageState extends State<HomePage> {
             _namaz_timing = jsonDecode(response.body);
             _showSpiner = false;
           });
+          for (var namazType in _namaz_timing['list'].toList()) {
+            var now = DateTime.now();
+
+            var time = DateTime.parse(namazType['timing'].first['jammat_time']);
+            var namazTime = DateTime(
+              now.year,
+              now.month,
+              now.day,
+              time.hour,
+              time.minute,
+              time.second,
+            );
+            allList.add(namazTime);
+            if (DateTime.now().isBefore(namazTime) == true) {
+              list.add(namazTime);
+            }
+            print(list.toString() + 'asduyga');
+          }
+
+          setState(() {
+            _currentMasjid = list.reduce((a, b) =>
+                a.difference(DateTime.now()).abs() <
+                        b.difference(DateTime.now()).abs()
+                    ? a
+                    : b);
+            // _currentMasjidName = _key[allList.indexOf(_currentNamaz)];
+          });
+          print(_currentMasjid);
         } else {
           // If the server did not return a 200 OK response,
           // then throw an exception.
@@ -96,7 +129,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var _key = _namaz_timing['list']![0]['timing'].keys;
+    var _key = _namaz_timing['list'][0]['timing'].keys;
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       body: ModalProgressHUD(
@@ -191,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           SizedBox(
-                            height: responsiveHeight(14, context),
+                            height: responsiveHeight(10, context),
                           ),
                           Row(
                             children: [
