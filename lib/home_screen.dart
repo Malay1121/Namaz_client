@@ -8,6 +8,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/constants.dart';
 import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
+import 'package:time/time.dart';
 
 import 'navbar.dart';
 
@@ -51,7 +52,7 @@ bool _showSpiner = true;
 List allList = [];
 List list = [];
 var _currentMasjid;
-var _currentMasjidName = '';
+var _currentMasjidIndex = 0;
 
 class _HomePageState extends State<HomePage> {
   Future getData() async {
@@ -88,10 +89,12 @@ class _HomePageState extends State<HomePage> {
             _namaz_timing = jsonDecode(response.body);
             _showSpiner = false;
           });
+          var key = _namaz_timing['list'][0]['timing'].keys.toList();
           for (var namazType in _namaz_timing['list'].toList()) {
             var now = DateTime.now();
 
-            var time = DateTime.parse(namazType['timing'].first['jammat_time']);
+            var time = DateTime.parse(
+                namazType['timing'][key.first.toString()]['jammat_time']);
             var namazTime = DateTime(
               now.year,
               now.month,
@@ -109,13 +112,13 @@ class _HomePageState extends State<HomePage> {
 
           setState(() {
             _currentMasjid = list.reduce((a, b) =>
-                a.difference(DateTime.now()).abs() <
+                a.difference(DateTime.now() - 3.minutes).abs() <
                         b.difference(DateTime.now()).abs()
                     ? a
                     : b);
-            // _currentMasjidName = _key[allList.indexOf(_currentNamaz)];
+            _currentMasjidIndex = allList.indexOf(_currentMasjid);
           });
-          print(_currentMasjid);
+          print(_currentMasjid.toString() + 'asd');
         } else {
           // If the server did not return a 200 OK response,
           // then throw an exception.
@@ -214,7 +217,8 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _namaz_timing['list'][0]['name'].toString(),
+                            _namaz_timing['list'][_currentMasjidIndex]['name']
+                                .toString(),
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                 color: Colors.white,
@@ -255,7 +259,9 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     TimeOfDay.fromDateTime(
                                       DateTime.parse(
-                                        _namaz_timing['list'][0]['timing']
+                                        _namaz_timing['list']
+                                                        [_currentMasjidIndex]
+                                                    ['timing']
                                                 [_key.first.toString()]
                                             ['jammat_time'],
                                       ),

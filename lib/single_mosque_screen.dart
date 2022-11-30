@@ -12,6 +12,7 @@ import 'package:namaz_timing/all_mosque.dart';
 import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:smooth_compass/utils/src/compass_ui.dart';
+import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'constants.dart';
@@ -194,7 +195,6 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
         _currentNamazName = _key[allList.indexOf(_currentNamaz)];
       });
     });
-    
   }
 
   @override
