@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ List allList = [];
 List list = [];
 var _currentMasjid;
 var _currentMasjidIndex = 0;
+bool loop = true;
 
 class _HomePageState extends State<HomePage> {
   Future getData() async {
@@ -77,56 +79,69 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Future getData() async {
-        final response =
-            await http.get(Uri.parse('https://api.namaz.co.in/currentnamaz'));
+      while (loop == true) {
+        setState(() {
+          loop = false;
+        });
+        Future getData() async {
+          final response =
+              await http.get(Uri.parse('https://api.namaz.co.in/currentnamaz'));
 
-        if (response.statusCode == 200) {
-          // If the server did return a 200 OK response,
-          // then parse the JSON.
+          if (response.statusCode == 200) {
+            // If the server did return a 200 OK response,
+            // then parse the JSON.
 
-          setState(() {
-            _namaz_timing = jsonDecode(response.body);
-            _showSpiner = false;
-          });
-          var key = _namaz_timing['list'][0]['timing'].keys.toList();
-          for (var namazType in _namaz_timing['list'].toList()) {
-            var now = DateTime.now();
+            setState(() {
+              _namaz_timing = jsonDecode(response.body);
+              _showSpiner = false;
+            });
+            var key = _namaz_timing['list'][0]['timing'].keys.toList();
+            for (var namazType in _namaz_timing['list'].toList()) {
+              var now = DateTime.now();
 
-            var time = DateTime.parse(
-                namazType['timing'][key.first.toString()]['jammat_time']);
-            var namazTime = DateTime(
-              now.year,
-              now.month,
-              now.day,
-              time.hour,
-              time.minute,
-              time.second,
-            );
-            allList.add(namazTime);
-            if (DateTime.now().isBefore(namazTime) == true) {
-              list.add(namazTime);
+              var time = DateTime.parse(
+                  namazType['timing'][key.first.toString()]['jammat_time']);
+              var namazTime = DateTime(
+                now.year,
+                now.month,
+                now.day,
+                time.hour,
+                time.minute,
+                time.second,
+              );
+              allList.add(namazTime);
+              if (DateTime.now().isBefore(namazTime + 3.minutes) == true) {
+                list.add(namazTime);
+              }
+              print(list.toString() + 'asduyga');
             }
-            print(list.toString() + 'asduyga');
+
+            setState(() {
+              _currentMasjid = list.reduce((a, b) =>
+                  a.difference(DateTime.now() - 3.minutes).abs() <
+                          b.difference(DateTime.now()).abs()
+                      ? a
+                      : b);
+              _currentMasjidIndex = allList.indexOf(_currentMasjid);
+            });
+            print(_currentMasjid.toString() + 'asd');
+            var duration =
+                (_currentMasjid.difference(DateTime.now())) + 3.minutes;
+            print(duration.toString() + 'asd');
+            Future.delayed(duration, () {
+              setState(() {
+                loop = true;
+              });
+            });
+          } else {
+            // If the server did not return a 200 OK response,
+            // then throw an exception.
+            throw Exception('Failed to load album');
           }
-
-          setState(() {
-            _currentMasjid = list.reduce((a, b) =>
-                a.difference(DateTime.now() - 3.minutes).abs() <
-                        b.difference(DateTime.now()).abs()
-                    ? a
-                    : b);
-            _currentMasjidIndex = allList.indexOf(_currentMasjid);
-          });
-          print(_currentMasjid.toString() + 'asd');
-        } else {
-          // If the server did not return a 200 OK response,
-          // then throw an exception.
-          throw Exception('Failed to load album');
         }
-      }
 
-      await getData();
+        await getData();
+      }
     });
   }
 
