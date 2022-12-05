@@ -56,6 +56,7 @@ class NavBar extends StatelessWidget {
                 ),
                 AutoSizeText(
                   'Home',
+                  minFontSize: 5,
                   maxLines: 1,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
@@ -92,6 +93,7 @@ class NavBar extends StatelessWidget {
                 ),
                 AutoSizeText(
                   'All Mosque',
+                  minFontSize: 5,
                   maxLines: 1,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
@@ -130,6 +132,7 @@ class NavBar extends StatelessWidget {
                 ),
                 AutoSizeText(
                   'Timings',
+                  minFontSize: 5,
                   maxLines: 1,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(

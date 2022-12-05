@@ -108,6 +108,7 @@ class _AllMosqueState extends State<AllMosque> {
                     FadeInDown(
                       child: AutoSizeText(
                         'All Mosques',
+                        minFontSize: 5,
                         maxLines: 1,
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(
@@ -223,14 +224,18 @@ class MosqueCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AutoSizeText(
-                        masjidName,
-                        maxLines: 1,
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                            fontSize: responsiveText(16, context),
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                      SizedBox(
+                        width: responsiveWidth(150, context),
+                        child: AutoSizeText(
+                          masjidName,
+                          minFontSize: 5,
+                          maxLines: 1,
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                              fontSize: responsiveText(16, context),
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -252,13 +257,17 @@ class MosqueCard extends StatelessWidget {
                               width: responsiveText(7.5, context),
                               height: responsiveHeight(8.74, context),
                             ),
-                            AutoSizeText(
-                              'Get Direction',
-                              maxLines: 1,
-                              style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                  color: Color(0xFF77B255),
-                                  fontSize: responsiveText(10, context),
+                            SizedBox(
+                              width: responsiveWidth(100, context),
+                              child: AutoSizeText(
+                                'Get Direction',
+                                minFontSize: 5,
+                                maxLines: 1,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    color: Color(0xFF77B255),
+                                    fontSize: responsiveText(10, context),
+                                  ),
                                 ),
                               ),
                             )

@@ -232,14 +232,19 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    AutoSizeText(
-                                      _mosqueData['name'].toString(),
-                                      maxLines: 1,
-                                      style: GoogleFonts.inter(
-                                        textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: responsiveText(16, context),
-                                          fontWeight: FontWeight.w600,
+                                    SizedBox(
+                                      width: responsiveWidth(150, context),
+                                      child: AutoSizeText(
+                                        _mosqueData['name'].toString(),
+                                        minFontSize: 5,
+                                        maxLines: 1,
+                                        style: GoogleFonts.inter(
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontSize:
+                                                responsiveText(16, context),
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -260,54 +265,73 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            AutoSizeText(
-                                              _currentNamazName.toString(),
-                                              maxLines: 1,
-                                              style: GoogleFonts.inter(
-                                                textStyle: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: responsiveText(
-                                                      10, context),
+                                            SizedBox(
+                                              width:
+                                                  responsiveWidth(100, context),
+                                              child: AutoSizeText(
+                                                _currentNamazName.toString(),
+                                                minFontSize: 5,
+                                                maxLines: 1,
+                                                style: GoogleFonts.inter(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: responsiveText(
+                                                        10, context),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                            AutoSizeText(
-                                              TimeOfDay.fromDateTime(
-                                                DateTime.parse(_mosqueData[
-                                                                'timing'][
-                                                            _currentNamazName
-                                                                .toString()]
-                                                        ['jammat_time']
-                                                    .toString()),
-                                              ).format(context).toString(),
-                                              maxLines: 1,
-                                              style: GoogleFonts.inter(
-                                                textStyle: TextStyle(
-                                                  color: Color(0xFF77B255),
-                                                  fontSize: responsiveText(
-                                                      24, context),
-                                                  fontWeight: FontWeight.w600,
+                                            SizedBox(
+                                              width:
+                                                  responsiveWidth(130, context),
+                                              child: AutoSizeText(
+                                                TimeOfDay.fromDateTime(
+                                                  DateTime.parse(_mosqueData[
+                                                                  'timing'][
+                                                              _currentNamazName
+                                                                  .toString()]
+                                                          ['jammat_time']
+                                                      .toString()),
+                                                ).format(context).toString(),
+                                                minFontSize: 5,
+                                                maxLines: 1,
+                                                style: GoogleFonts.inter(
+                                                  textStyle: TextStyle(
+                                                    color: Color(0xFF77B255),
+                                                    fontSize: responsiveText(
+                                                        24, context),
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                            AutoSizeText(
-                                              TimeOfDay.fromDateTime(
-                                                    DateTime.parse(
-                                                        getTime['start']
-                                                            .toString()),
-                                                  ).format(context).toString() +
-                                                  ' - ' +
-                                                  TimeOfDay.fromDateTime(
-                                                    DateTime.parse(
-                                                        getTime['end']
-                                                            .toString()),
-                                                  ).format(context).toString(),
-                                              maxLines: 1,
-                                              style: GoogleFonts.inter(
-                                                textStyle: TextStyle(
-                                                  color: Color(0xFFA3A3A3),
-                                                  fontSize: responsiveText(
-                                                      10, context),
+                                            SizedBox(
+                                              width:
+                                                  responsiveWidth(130, context),
+                                              child: AutoSizeText(
+                                                TimeOfDay.fromDateTime(
+                                                      DateTime.parse(
+                                                          getTime['start']
+                                                              .toString()),
+                                                    )
+                                                        .format(context)
+                                                        .toString() +
+                                                    ' - ' +
+                                                    TimeOfDay.fromDateTime(
+                                                      DateTime.parse(
+                                                          getTime['end']
+                                                              .toString()),
+                                                    )
+                                                        .format(context)
+                                                        .toString(),
+                                                minFontSize: 5,
+                                                maxLines: 1,
+                                                style: GoogleFonts.inter(
+                                                  textStyle: TextStyle(
+                                                    color: Color(0xFFA3A3A3),
+                                                    fontSize: responsiveText(
+                                                        10, context),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -375,12 +399,16 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                     height: responsiveText(10, context),
                                     width: responsiveText(10, context),
                                   ),
-                                  AutoSizeText(
-                                    'Get Direction',
-                                    style: GoogleFonts.inter(
-                                      textStyle: TextStyle(
-                                        color: Color(0xFF77B255),
-                                        fontSize: responsiveText(8, context),
+                                  SizedBox(
+                                    width: responsiveWidth(50, context),
+                                    child: AutoSizeText(
+                                      'Get Direction',
+                                      maxLines: 1,
+                                      style: GoogleFonts.inter(
+                                        textStyle: TextStyle(
+                                          color: Color(0xFF77B255),
+                                          fontSize: responsiveText(8, context),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -420,12 +448,15 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                           SizedBox(
                             width: responsiveWidth(15, context),
                           ),
-                          AutoSizeText(
-                            key,
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                color: Color(0xFFDADADA),
-                                fontSize: responsiveText(16, context),
+                          SizedBox(
+                            width: responsiveWidth(100, context),
+                            child: AutoSizeText(
+                              key,
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                  color: Color(0xFFDADADA),
+                                  fontSize: responsiveText(16, context),
+                                ),
                               ),
                             ),
                           ),
@@ -436,6 +467,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                             children: [
                               AutoSizeText(
                                 'Azan Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['azan_time'])).format(context)}',
+                                maxLines: 1,
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
                                     color: Color(0xFFDADADA),
@@ -448,6 +480,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                               ),
                               AutoSizeText(
                                 'Jammat Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['jammat_time'])).format(context)}',
+                                maxLines: 1,
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
                                     color: Color(0xFFDADADA),

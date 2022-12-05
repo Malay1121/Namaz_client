@@ -158,6 +158,7 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
                     FadeInDown(
                       child: AutoSizeText(
                         'Namaz Timing',
+                        maxLines: 1,
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(
                             color: Colors.white,
@@ -188,13 +189,17 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
                         SizedBox(
                           height: responsiveHeight(20, context),
                         ),
-                        AutoSizeText(
-                          'Know The Namaz Timing',
-                          style: GoogleFonts.inter(
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: responsiveText(16, context),
+                        SizedBox(
+                          width: responsiveWidth(200, context),
+                          child: AutoSizeText(
+                            'Know The Namaz Timing',
+                            maxLines: 1,
+                            style: GoogleFonts.inter(
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: responsiveText(16, context),
+                              ),
                             ),
                           ),
                         ),
@@ -280,26 +285,34 @@ class NamazTimingCard extends StatelessWidget {
             SizedBox(
               height: responsiveHeight(29, context),
             ),
-            AutoSizeText(
-              name,
-              style: GoogleFonts.inter(
-                textStyle: TextStyle(
-                  color: Color(0xFFDADADA),
-                  fontSize: responsiveText(16, context),
-                  fontWeight: FontWeight.w600,
+            SizedBox(
+              width: responsiveWidth(50, context),
+              child: AutoSizeText(
+                name,
+                maxLines: 1,
+                style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                    color: Color(0xFFDADADA),
+                    fontSize: responsiveText(16, context),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
             SizedBox(
               height: responsiveHeight(3, context),
             ),
-            AutoSizeText(
-              time,
-              style: GoogleFonts.inter(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: responsiveText(16, context),
-                  fontWeight: FontWeight.w700,
+            SizedBox(
+              width: responsiveWidth(150, context),
+              child: AutoSizeText(
+                time,
+                maxLines: 1,
+                style: GoogleFonts.inter(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: responsiveText(16, context),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             )
