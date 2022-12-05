@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_animator/widgets/fading_entrances/fade_in_down.dart';
@@ -155,7 +156,7 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
                       height: responsiveText(30, context),
                     ),
                     FadeInDown(
-                      child: Text(
+                      child: AutoSizeText(
                         'Namaz Timing',
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(
@@ -187,7 +188,7 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
                         SizedBox(
                           height: responsiveHeight(20, context),
                         ),
-                        Text(
+                        AutoSizeText(
                           'Know The Namaz Timing',
                           style: GoogleFonts.inter(
                             textStyle: TextStyle(
@@ -279,7 +280,7 @@ class NamazTimingCard extends StatelessWidget {
             SizedBox(
               height: responsiveHeight(29, context),
             ),
-            Text(
+            AutoSizeText(
               name,
               style: GoogleFonts.inter(
                 textStyle: TextStyle(
@@ -292,7 +293,7 @@ class NamazTimingCard extends StatelessWidget {
             SizedBox(
               height: responsiveHeight(3, context),
             ),
-            Text(
+            AutoSizeText(
               time,
               style: GoogleFonts.inter(
                 textStyle: TextStyle(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/animation/animation_preferences.dart';
@@ -66,56 +67,10 @@ var _currentNamaz;
 var _currentNamazName;
 
 dynamic getTime = {
-  "timing": [
-    {
-      "name": "fajr",
-      "start": "2022-11-05T05:26:28.331000",
-      "end": "2022-11-05T06:40:28.331000",
-      "city": "surat"
-    },
-    {
-      "name": "sunrise",
-      "start": "2022-11-05T06:41:28.331000",
-      "end": "2022-11-05T07:01:28.331000",
-      "city": "surat"
-    },
-    {
-      "name": "zawal",
-      "start": "2022-11-05T12:00:28.331000",
-      "end": "2022-11-05T12:22:28.331000",
-      "city": "surat"
-    },
-    {
-      "name": "zohr",
-      "start": "2022-11-05T12:23:28.331000",
-      "end": "2022-11-05T16:27:28.331000",
-      "city": "surat"
-    },
-    {
-      "name": "asr",
-      "start": "2022-11-05T16:28:28.331000",
-      "end": "2022-11-05T18:03:28.331000",
-      "city": "surat"
-    },
-    {
-      "name": "sunset",
-      "start": "2022-11-05T17:43:28.331000",
-      "end": "2022-11-05T18:02:28.331000",
-      "city": "surat"
-    },
-    {
-      "name": "magrib",
-      "start": "2022-11-05T18:03:28.331000",
-      "end": "2022-11-05T19:18:28.331000",
-      "city": "surat"
-    },
-    {
-      "name": "isha",
-      "start": "2022-11-05T19:19:28.331000",
-      "end": "2022-11-05T05:25:28.331000",
-      "city": "surat"
-    }
-  ]
+  "name": "fajr",
+  "start": "2022-11-05T05:26:28.331000",
+  "end": "2022-11-05T06:40:28.331000",
+  "city": "surat"
 };
 
 class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
@@ -136,9 +91,9 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
     }
   }
 
-  List list = [];
+  List _list = [];
   List _key = [];
-  List allList = [];
+  List _allList = [];
 
   @override
   void initState() {
@@ -172,29 +127,48 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
         var namazTime = DateTime(
           now.year,
           now.month,
-          now.day,
+          namazType.toString() == 'fajr'
+              ? now.isBefore(DateTime(now.year, now.month, now.day, 12)) == true
+                  ? now.day
+                  : now.day - 1
+              : now.day,
           time.hour,
           time.minute,
           time.second,
         );
-        allList.add(namazTime);
-        if (DateTime.now().isBefore(namazTime) == true) {
-          list.add(namazTime);
+        _allList.add(namazTime);
+        if (DateTime.now().isBefore(namazTime + 3.minutes) == true) {
+          _list.add(namazTime);
         }
-
+        print(_list.toString() + 'asduyga');
         _key.add(namazType);
-        print(list.toString() + 'asduyga' + _key.toString());
       }
 
       setState(() {
-        _currentNamaz = list.reduce((a, b) =>
+        _currentNamaz = _list.reduce((a, b) =>
             a.difference(DateTime.now()).abs() <
                     b.difference(DateTime.now()).abs()
                 ? a
                 : b);
-        _currentNamazName = _key[allList.indexOf(_currentNamaz)];
+        _currentNamazName = _key[_allList.indexOf(_currentNamaz)];
       });
+      var response = await http.get(Uri.parse(
+          'https://api.namaz.co.in/namaz/${_currentNamazName.toString()}'));
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        setState(() {
+          getTime = jsonDecode(response.body);
+        });
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load namaz');
+      }
     });
+    // print('https://api.namaz.co.in/namaz/${_currentNamazName.toString()}' +
+    //     'asdaf');
   }
 
   @override
@@ -258,8 +232,9 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    AutoSizeText(
                                       _mosqueData['name'].toString(),
+                                      maxLines: 1,
                                       style: GoogleFonts.inter(
                                         textStyle: TextStyle(
                                           color: Colors.white,
@@ -285,8 +260,9 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            AutoSizeText(
                                               _currentNamazName.toString(),
+                                              maxLines: 1,
                                               style: GoogleFonts.inter(
                                                 textStyle: TextStyle(
                                                   color: Colors.white,
@@ -295,7 +271,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                                 ),
                                               ),
                                             ),
-                                            Text(
+                                            AutoSizeText(
                                               TimeOfDay.fromDateTime(
                                                 DateTime.parse(_mosqueData[
                                                                 'timing'][
@@ -304,6 +280,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                                         ['jammat_time']
                                                     .toString()),
                                               ).format(context).toString(),
+                                              maxLines: 1,
                                               style: GoogleFonts.inter(
                                                 textStyle: TextStyle(
                                                   color: Color(0xFF77B255),
@@ -313,8 +290,19 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                                 ),
                                               ),
                                             ),
-                                            Text(
-                                              'From 1:30 PM  - 3:35 PM',
+                                            AutoSizeText(
+                                              TimeOfDay.fromDateTime(
+                                                    DateTime.parse(
+                                                        getTime['start']
+                                                            .toString()),
+                                                  ).format(context).toString() +
+                                                  ' - ' +
+                                                  TimeOfDay.fromDateTime(
+                                                    DateTime.parse(
+                                                        getTime['end']
+                                                            .toString()),
+                                                  ).format(context).toString(),
+                                              maxLines: 1,
                                               style: GoogleFonts.inter(
                                                 textStyle: TextStyle(
                                                   color: Color(0xFFA3A3A3),
@@ -387,7 +375,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                     height: responsiveText(10, context),
                                     width: responsiveText(10, context),
                                   ),
-                                  Text(
+                                  AutoSizeText(
                                     'Get Direction',
                                     style: GoogleFonts.inter(
                                       textStyle: TextStyle(
@@ -432,7 +420,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                           SizedBox(
                             width: responsiveWidth(15, context),
                           ),
-                          Text(
+                          AutoSizeText(
                             key,
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
@@ -446,7 +434,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 'Azan Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['azan_time'])).format(context)}',
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(
@@ -458,7 +446,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                               SizedBox(
                                 height: responsiveHeight(4, context),
                               ),
-                              Text(
+                              AutoSizeText(
                                 'Jammat Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['jammat_time'])).format(context)}',
                                 style: GoogleFonts.inter(
                                   textStyle: TextStyle(

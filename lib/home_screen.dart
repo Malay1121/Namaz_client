@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -113,7 +114,7 @@ class _HomePageState extends State<HomePage> {
               if (DateTime.now().isBefore(namazTime + 3.minutes) == true) {
                 list.add(namazTime);
               }
-              print(list.toString() + 'asduyga');
+              // print(list.toString() + 'asduyga');
             }
 
             setState(() {
@@ -124,10 +125,10 @@ class _HomePageState extends State<HomePage> {
                       : b);
               _currentMasjidIndex = allList.indexOf(_currentMasjid);
             });
-            print(_currentMasjid.toString() + 'asd');
+            // print(_currentMasjid.toString() + 'asd');
             var duration =
                 (_currentMasjid.difference(DateTime.now())) + 3.minutes;
-            print(duration.toString() + 'asd');
+            // print(duration.toString() + 'asd');
             Future.delayed(duration, () {
               setState(() {
                 loop = true;
@@ -184,8 +185,9 @@ class _HomePageState extends State<HomePage> {
                       height: responsiveText(30, context),
                     ),
                     FadeInDown(
-                      child: Text(
+                      child: AutoSizeText(
                         'Home',
+                        maxLines: 1,
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(
                             color: Colors.white,
@@ -231,9 +233,10 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          AutoSizeText(
                             _namaz_timing['list'][_currentMasjidIndex]['name']
                                 .toString(),
+                            maxLines: 1,
                             style: GoogleFonts.inter(
                               textStyle: TextStyle(
                                 color: Colors.white,
@@ -258,12 +261,13 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  AutoSizeText(
                                     _namaz_timing['list'][0]['timing']
                                             .keys
                                             .first
                                             .toString() +
                                         ' Prayer',
+                                    maxLines: 1,
                                     style: GoogleFonts.inter(
                                       textStyle: TextStyle(
                                         color: Colors.white,
@@ -271,7 +275,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  Text(
+                                  AutoSizeText(
                                     TimeOfDay.fromDateTime(
                                       DateTime.parse(
                                         _namaz_timing['list']
@@ -281,6 +285,7 @@ class _HomePageState extends State<HomePage> {
                                             ['jammat_time'],
                                       ),
                                     ).format(context).toString(),
+                                    maxLines: 1,
                                     style: GoogleFonts.inter(
                                       textStyle: TextStyle(
                                         color: Color(0xFF77B255),
@@ -289,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  Text(
+                                  AutoSizeText(
                                     'From ' +
                                         TimeOfDay.fromDateTime(
                                           DateTime.parse(
@@ -300,6 +305,7 @@ class _HomePageState extends State<HomePage> {
                                           DateTime.parse(
                                               _namaz_timing['time']['end']),
                                         ).format(context).toString(),
+                                    maxLines: 1,
                                     style: GoogleFonts.inter(
                                       textStyle: TextStyle(
                                         color: Color(0xFFA3A3A3),
@@ -409,8 +415,9 @@ class NamazCard extends StatelessWidget {
                 SizedBox(
                   width: responsiveWidth(12, context),
                 ),
-                Text(
+                AutoSizeText(
                   masjidName,
+                  maxLines: 1,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                       fontSize: responsiveText(16, context),
@@ -424,12 +431,13 @@ class NamazCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    AutoSizeText(
                       TimeOfDay.fromDateTime(
                         DateTime.parse(
                           timing[key.first.toString()]['jammat_time'],
                         ),
                       ).format(context).toString(),
+                      maxLines: 1,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -441,8 +449,9 @@ class NamazCard extends StatelessWidget {
                     SizedBox(
                       height: responsiveHeight(6, context),
                     ),
-                    Text(
+                    AutoSizeText(
                       key.first.toString(),
+                      maxLines: 1,
                       style: GoogleFonts.inter(
                         textStyle: TextStyle(
                           color: Color(0xFFA3A3A3),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -105,8 +106,9 @@ class _AllMosqueState extends State<AllMosque> {
                       height: responsiveText(30, context),
                     ),
                     FadeInDown(
-                      child: Text(
+                      child: AutoSizeText(
                         'All Mosques',
+                        maxLines: 1,
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(
                             color: Colors.white,
@@ -221,8 +223,9 @@ class MosqueCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      AutoSizeText(
                         masjidName,
+                        maxLines: 1,
                         style: GoogleFonts.inter(
                           textStyle: TextStyle(
                             fontSize: responsiveText(16, context),
@@ -249,8 +252,9 @@ class MosqueCard extends StatelessWidget {
                               width: responsiveText(7.5, context),
                               height: responsiveHeight(8.74, context),
                             ),
-                            Text(
+                            AutoSizeText(
                               'Get Direction',
+                              maxLines: 1,
                               style: GoogleFonts.inter(
                                 textStyle: TextStyle(
                                   color: Color(0xFF77B255),

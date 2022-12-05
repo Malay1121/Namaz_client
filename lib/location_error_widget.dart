@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class LocationErrorWidget extends StatelessWidget {
@@ -23,13 +24,13 @@ class LocationErrorWidget extends StatelessWidget {
               color: errorColor,
             ),
             box,
-            Text(
+            AutoSizeText(
               error!,
               style: TextStyle(color: errorColor, fontWeight: FontWeight.bold),
             ),
             box,
             ElevatedButton(
-              child: Text("Retry"),
+              child: AutoSizeText("Retry"),
               onPressed: () {
                 if (callback != null) callback!();
               },

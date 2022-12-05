@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:namaz_timing/namaz_timing.dart';
@@ -53,8 +54,9 @@ class NavBar extends StatelessWidget {
                 SizedBox(
                   height: responsiveHeight(6.2, context),
                 ),
-                Text(
+                AutoSizeText(
                   'Home',
+                  maxLines: 1,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                       color: currentPage == 'Home'
@@ -88,8 +90,9 @@ class NavBar extends StatelessWidget {
                 SizedBox(
                   height: responsiveHeight(6.2, context),
                 ),
-                Text(
+                AutoSizeText(
                   'All Mosque',
+                  maxLines: 1,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                       color: currentPage == 'Mosque'
@@ -125,8 +128,9 @@ class NavBar extends StatelessWidget {
                 SizedBox(
                   height: responsiveHeight(6.2, context),
                 ),
-                Text(
+                AutoSizeText(
                   'Timings',
+                  maxLines: 1,
                   style: GoogleFonts.inter(
                     textStyle: TextStyle(
                       color: currentPage == 'Timing'
