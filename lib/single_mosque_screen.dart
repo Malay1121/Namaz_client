@@ -15,6 +15,7 @@ import 'package:namaz_timing/responsive.dart';
 import 'package:smooth_compass/utils/src/compass_ui.dart';
 import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'constants.dart';
 
@@ -130,7 +131,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
           namazType.toString() == 'fajr'
               ? now.isBefore(DateTime(now.year, now.month, now.day, 12)) == true
                   ? now.day
-                  : now.day - 1
+                  : now.day + 1
               : now.day,
           time.hour,
           time.minute,
@@ -378,8 +379,12 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                           Spacer(),
                           GestureDetector(
                             onTap: () async {
-                              if (await canLaunch(_mosqueData['map_link'])) {
-                                await launch(_mosqueData['map_link']);
+                              if (await canLaunchUrlString(
+                                  _mosqueData['map_link'])) {
+                                await launchUrlString(
+                                  _mosqueData['map_link'],
+                                  mode: LaunchMode.externalApplication,
+                                );
                               } else {
                                 throw 'Could not launch ${_mosqueData['map_link']}';
                               }

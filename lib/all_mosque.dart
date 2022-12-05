@@ -10,6 +10,7 @@ import 'package:namaz_timing/constants.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:namaz_timing/single_mosque_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'navbar.dart';
 
@@ -244,8 +245,9 @@ class MosqueCard extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          if (await canLaunch(directions)) {
-                            await launch(directions);
+                          if (await canLaunchUrlString(directions)) {
+                            await launchUrlString(directions,
+                                mode: LaunchMode.externalApplication);
                           } else {
                             throw 'Could not launch $directions';
                           }
