@@ -37,17 +37,18 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: EasySplashScreen(
-          backgroundImage: AssetImage('assets/splash.png'),
-          logo: Image.asset(
-            'assets/splash.png',
-            width: 0,
-            height: 0,
-          ),
-          backgroundColor: Colors.grey.shade400,
-          showLoader: true,
-          loaderColor: Color(0xFF54AEB4),
-          navigator: HomePage(),
-          durationInSeconds: 2),
+        backgroundImage: AssetImage('assets/splash.png'),
+        logo: Image.asset(
+          'assets/splash.png',
+          width: 0,
+          height: 0,
+        ),
+        backgroundColor: Colors.grey.shade400,
+        showLoader: true,
+        loaderColor: Color(0xFF54AEB4),
+        navigator: HomePage(),
+        durationInSeconds: 2,
+      ),
     );
   }
 }
