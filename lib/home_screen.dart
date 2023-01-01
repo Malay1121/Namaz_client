@@ -180,15 +180,17 @@ class _HomePageState extends State<HomePage> {
                       height: responsiveText(30, context),
                     ),
                     FadeInDown(
-                      child: AutoSizeText(
-                        'Home',
-                        minFontSize: 5,
-                        maxLines: 1,
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: responsiveText(18, context),
-                            fontWeight: FontWeight.w500,
+                      child: Center(
+                        child: AutoSizeText(
+                          'Home',
+                          minFontSize: 5,
+                          maxLines: 1,
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: responsiveText(18, context),
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
