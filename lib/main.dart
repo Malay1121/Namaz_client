@@ -1,12 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:namaz_timing/home_screen.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_compass/utils/src/compass_ui.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  InAppUpdate.checkForUpdate().then((info) {
+    if (info.updateAvailability == UpdateAvailability.updateAvailable) {
+      InAppUpdate.startFlexibleUpdate();
+    }
+  });
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

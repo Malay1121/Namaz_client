@@ -82,7 +82,7 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       setState(() {
-        namaz_timing = response.body;
+        namaz_timing = json.decode(response.body);
       });
     } else {
       // If the server did not return a 200 OK response,
@@ -156,14 +156,16 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
                       height: responsiveText(30, context),
                     ),
                     FadeInDown(
-                      child: AutoSizeText(
-                        'Namaz Timing',
-                        maxLines: 1,
-                        style: GoogleFonts.inter(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: responsiveText(18, context),
-                            fontWeight: FontWeight.w500,
+                      child: Center(
+                        child: AutoSizeText(
+                          'Namaz Timing',
+                          maxLines: 1,
+                          style: GoogleFonts.inter(
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: responsiveText(18, context),
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
@@ -191,14 +193,16 @@ class _NamazTimingScreenState extends State<NamazTimingScreen> {
                         ),
                         SizedBox(
                           width: responsiveWidth(200, context),
-                          child: AutoSizeText(
-                            'Know The Namaz Timing',
-                            maxLines: 1,
-                            style: GoogleFonts.inter(
-                              textStyle: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: responsiveText(16, context),
+                          child: Center(
+                            child: AutoSizeText(
+                              'Know The Namaz Timing',
+                              maxLines: 1,
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: responsiveText(16, context),
+                                ),
                               ),
                             ),
                           ),
@@ -287,14 +291,16 @@ class NamazTimingCard extends StatelessWidget {
             ),
             SizedBox(
               width: responsiveWidth(50, context),
-              child: AutoSizeText(
-                name,
-                maxLines: 1,
-                style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                    color: Color(0xFFDADADA),
-                    fontSize: responsiveText(16, context),
-                    fontWeight: FontWeight.w600,
+              child: Center(
+                child: AutoSizeText(
+                  name,
+                  maxLines: 1,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      color: Color(0xFFDADADA),
+                      fontSize: responsiveText(16, context),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -304,14 +310,16 @@ class NamazTimingCard extends StatelessWidget {
             ),
             SizedBox(
               width: responsiveWidth(150, context),
-              child: AutoSizeText(
-                time,
-                maxLines: 1,
-                style: GoogleFonts.inter(
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: responsiveText(16, context),
-                    fontWeight: FontWeight.w700,
+              child: Center(
+                child: AutoSizeText(
+                  time,
+                  maxLines: 1,
+                  style: GoogleFonts.inter(
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: responsiveText(16, context),
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
