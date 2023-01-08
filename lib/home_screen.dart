@@ -147,6 +147,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       body: ModalProgressHUD(
+        opacity: 1,
         inAsyncCall: _showSpiner,
         child: Column(
           children: [
