@@ -18,7 +18,6 @@ void main() async {
   // });
 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   HomeWidget.registerBackgroundCallback(backgroundCallback);
 
   WonderPush.subscribeToNotifications();
