@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -7,15 +8,20 @@ import 'package:namaz_timing/home_screen.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_compass/utils/src/compass_ui.dart';
+import 'package:wonderpush_flutter/wonderpush_flutter.dart';
 
-void main() {
+void main() async {
   // InAppUpdate.checkForUpdate().then((info) {
   //   if (info.updateAvailability == UpdateAvailability.updateAvailable) {
   //     InAppUpdate.startFlexibleUpdate();
   //   }
   // });
+
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   HomeWidget.registerBackgroundCallback(backgroundCallback);
+
+  WonderPush.subscribeToNotifications();
   runApp(new MyApp());
 }
 
@@ -63,7 +69,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.grey.shade400,
         showLoader: true,
         loaderColor: Color(0xFF54AEB4),
-        navigator: MyHomePage(title: 'Flutter Demo Home Page'),
+        navigator: HomePage(),
         durationInSeconds: 2,
       ),
     );

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "224383467004",
+    "project_id": "namaz-uvesh",
+    "storage_bucket": "namaz-uvesh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224383467004:android:1f23ab6ee0a68a02e68679",
+        "android_client_info": {
+          "package_name": "com.example.namaz_timing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224383467004-mai7t615iuv1u3i6m3maq4df20b841ba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmw6o_Pwzkkzz2Bn4lM37o-VHo2xZ3Upk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224383467004-mai7t615iuv1u3i6m3maq4df20b841ba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
