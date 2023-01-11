@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:224383467004:android:1f23ab6ee0a68a02e68679",
         "android_client_info": {
-          "package_name": "com.example.namaz_timing"
+          "package_name": "co.namaz.near.me"
         }
       },
       "oauth_client": [
