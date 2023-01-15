@@ -67,6 +67,8 @@ bool _showSpinner = true;
 var _currentNamaz;
 var _currentNamazName;
 
+bool _reported = false;
+
 dynamic getTime = {
   "name": "fajr",
   "start": "2022-11-05T05:26:28.331000",
@@ -152,6 +154,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                 ? a
                 : b);
         _currentNamazName = _key[_allList.indexOf(_currentNamaz)];
+        _reported = false;
       });
       var response = await http.get(Uri.parse(
           'https://api.namaz.co.in/namaz/${_currentNamazName.toString()}'));
@@ -501,7 +504,63 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                         ],
                       ),
                     ),
-                  )
+                  ),
+                GestureDetector(
+                  onTap: () async {
+                    if (_reported == false) {
+                      await http
+                          .get(Uri.parse(
+                              'https://api.telegram.org/bot5917352634:AAGQK_HUfAn9ViRZYpeLQX-H1IngSvkYdgU/sendMessage?chat_id=933725202&text="Wrong namaz time in ${_mosqueData['name']}"'))
+                          .then((value) {
+                        return ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    "Masjid's timing reported successfully!")));
+                      });
+                      setState(() {
+                        _reported = true;
+                      });
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "You have already reported! Please try again later")));
+                    }
+                  },
+                  child: Container(
+                    width: responsiveWidth(125, context),
+                    height: responsiveHeight(30, context),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF2D2D30),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.report_gmailerrorred,
+                            color: Colors.redAccent,
+                          ),
+                          SizedBox(
+                            width: responsiveWidth(80, context),
+                            child: Center(
+                              child: AutoSizeText(
+                                'Report Timings',
+                                maxLines: 1,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontSize: responsiveText(8, context),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
