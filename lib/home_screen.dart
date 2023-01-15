@@ -11,6 +11,7 @@ import 'package:namaz_timing/constants.dart';
 import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:time/time.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'navbar.dart';
 
@@ -83,6 +84,28 @@ class _HomePageState extends State<HomePage> {
       Future getData() async {
         final response =
             await http.get(Uri.parse('https://api.namaz.co.in/currentnamaz'));
+
+        if (response.statusCode != 200) {
+          http
+              .get(Uri.parse(
+                  'https://api.telegram.org/bot5917352634:AAGQK_HUfAn9ViRZYpeLQX-H1IngSvkYdgU/sendMessage?chat_id=933725202&text="Error loaing message ${response.statusCode}"'))
+              .then((value) {
+            return showAboutDialog(
+              context: context,
+              children: [
+                Text('Error loading Masjids, Please try again later!'),
+                Container(
+                  color: Color(0xFF77B255),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:
+                        Text('Error loading Masjids, Please try again later!'),
+                  ),
+                ),
+              ],
+            );
+          });
+        }
 
         if (response.statusCode == 200) {
           // If the server did return a 200 OK response,
@@ -366,6 +389,34 @@ class _HomePageState extends State<HomePage> {
                             masjidName: namaz['name'],
                             timing: namaz['timing'],
                           ),
+                        GestureDetector(
+                          onTap: () async {
+                            if (await canLaunchUrlString(
+                                'https://api.whatsapp.com/send?phone=918200440994&text=Helllo%20I%20would%20like%20to%20add%20my%20masjid')) {
+                              await launchUrlString(
+                                'https://api.whatsapp.com/send?phone=918200440994&text=Helllo%20I%20would%20like%20to%20add%20my%20masjid',
+                                mode: LaunchMode.externalApplication,
+                              );
+                            } else {
+                              throw 'Could not launch Whatsapp';
+                            }
+                          },
+                          child: SizedBox(
+                            width: responsiveWidth(150, context),
+                            child: AutoSizeText(
+                              'Unable to find your masjid ?',
+                              minFontSize: 5,
+                              maxLines: 1,
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: responsiveText(16, context),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],

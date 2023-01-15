@@ -150,6 +150,34 @@ class _AllMosqueState extends State<AllMosque> {
                             directions: mosque['map_link'],
                             id: mosque['_id'],
                           ),
+                        GestureDetector(
+                          onTap: () async {
+                            if (await canLaunchUrlString(
+                                'https://api.whatsapp.com/send?phone=918200440994&text=Helllo%20I%20would%20like%20to%20add%20my%20masjid')) {
+                              await launchUrlString(
+                                'https://api.whatsapp.com/send?phone=918200440994&text=Helllo%20I%20would%20like%20to%20add%20my%20masjid',
+                                mode: LaunchMode.externalApplication,
+                              );
+                            } else {
+                              throw 'Could not launch Whatsapp';
+                            }
+                          },
+                          child: SizedBox(
+                            width: responsiveWidth(150, context),
+                            child: AutoSizeText(
+                              'Unable to find your masjid ?',
+                              minFontSize: 5,
+                              maxLines: 1,
+                              style: GoogleFonts.inter(
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: responsiveText(16, context),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],
