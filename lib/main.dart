@@ -1,7 +1,9 @@
+import 'package:alarm/alarm.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:namaz_timing/home_screen.dart';
@@ -19,11 +21,13 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   HomeWidget.registerBackgroundCallback(backgroundCallback);
-
+  await GetStorage.init();
+  Alarm.init();
   WonderPush.subscribeToNotifications();
   runApp(new MyApp());
 }
 
+final getStorage = GetStorage();
 dynamic backgroundCallback(uri) async {
   if (uri.host == 'updatecounter') {
     int _counter = 0;
