@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:alarm/alarm.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/all_mosque.dart';
+import 'package:namaz_timing/main.dart';
 import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:smooth_compass/utils/src/compass_ui.dart';
@@ -381,6 +383,47 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                           ),
                           Spacer(),
                           GestureDetector(
+                            onTap: () {
+                              if (getStorage.read('pinnedMasjid').toString() ==
+                                  _mosqueData.toString()) {
+                                setState(() {
+                                  getStorage.remove('pinnedMasjid');
+                                });
+                              } else {
+                                setState(() {
+                                  getStorage.write('pinnedMasjid', _mosqueData);
+                                  Alarm.set(
+                                    alarmDateTime: DateTime.now(),
+                                    assetAudio: "assets/beep_beep.mp3",
+                                    // onRing: () =>
+                                    //     setState(() => isRinging = true),
+                                    notifTitle: 'Alarm notification',
+                                    notifBody: 'Your alarm is ringing',
+                                  );
+                                });
+                              }
+                            },
+                            child: Container(
+                              width: responsiveWidth(30, context),
+                              height: responsiveHeight(30, context),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF2D2D30),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Icon(
+                                getStorage.read('pinnedMasjid').toString() ==
+                                        _mosqueData.toString()
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_outline,
+                                color: Color(0xFF77B255),
+                                size: responsiveText(15, context),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: responsiveWidth(5, context),
+                          ),
+                          GestureDetector(
                             onTap: () async {
                               if (await canLaunchUrlString(
                                   _mosqueData['map_link'])) {
@@ -408,14 +451,15 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                     width: responsiveText(10, context),
                                   ),
                                   SizedBox(
-                                    width: responsiveWidth(50, context),
+                                    width: responsiveWidth(60, context),
                                     child: AutoSizeText(
                                       'Get Direction',
                                       maxLines: 1,
+                                      minFontSize: 5,
                                       style: GoogleFonts.inter(
                                         textStyle: TextStyle(
                                           color: Color(0xFF77B255),
-                                          fontSize: responsiveText(8, context),
+                                          fontSize: responsiveText(10, context),
                                         ),
                                       ),
                                     ),

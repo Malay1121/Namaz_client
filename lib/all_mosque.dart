@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/constants.dart';
+import 'package:namaz_timing/main.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:namaz_timing/single_mosque_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,6 +22,7 @@ class AllMosque extends StatefulWidget {
   State<AllMosque> createState() => _AllMosqueState();
 }
 
+var pinnedMasjid = {};
 bool _showSpinner = true;
 dynamic _allMosque = {"Masjids": []};
 
@@ -34,6 +36,7 @@ class _AllMosqueState extends State<AllMosque> {
       // then parse the JSON.
       setState(() {
         _allMosque = jsonDecode(response.body);
+        _allMosque['Masjids'].remove(getStorage.read('pinnedMasjid'));
       });
     } else {
       // If the server did not return a 200 OK response,
@@ -57,6 +60,7 @@ class _AllMosqueState extends State<AllMosque> {
           setState(() {
             _allMosque = jsonDecode(response.body);
             _showSpinner = false;
+            _allMosque['Masjids'].remove(getStorage.read('pinnedMasjid'));
           });
         } else {
           // If the server did not return a 200 OK response,
@@ -143,6 +147,36 @@ class _AllMosqueState extends State<AllMosque> {
                         SizedBox(
                           height: responsiveHeight(11, context),
                         ),
+                        // MosqueCard(
+                        //   image: _allMosque['Masjids'][_allMosque['Masjids']
+                        //       .indexOf(
+                        //           getStorage.read('pinnedMasjid'))]!['img'],
+                        //   masjidName: _allMosque['Masjids'][
+                        //       _allMosque['Masjids'].indexOf(
+                        //           getStorage.read('pinnedMasjid'))]!['name'],
+                        //   directions: _allMosque['Masjids'][
+                        //       _allMosque['Masjids'].indexOf(getStorage
+                        //           .read('pinnedMasjid'))]!['map_link'],
+                        //   id: _allMosque['Masjids'][_allMosque['Masjids']
+                        //       .indexOf(
+                        //           getStorage.read('pinnedMasjid'))]!['_id'],
+                        // ),
+                        getStorage.read('pinnedMasjid') != null
+                            ? MosqueCard(
+                                image: getStorage
+                                    .read('pinnedMasjid')['img']
+                                    .toString(),
+                                masjidName: getStorage
+                                    .read('pinnedMasjid')['name']
+                                    .toString(),
+                                directions: getStorage
+                                    .read('pinnedMasjid')['map_link']
+                                    .toString(),
+                                id: getStorage
+                                    .read('pinnedMasjid')['_id']
+                                    .toString(),
+                              )
+                            : SizedBox(),
                         for (var mosque in _allMosque['Masjids']!)
                           MosqueCard(
                             image: mosque['img'],
@@ -159,7 +193,9 @@ class _AllMosqueState extends State<AllMosque> {
                                 mode: LaunchMode.externalApplication,
                               );
                             } else {
-                              throw 'Could not launch Whatsapp';
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("An Error Occured")));
+                              ;
                             }
                           },
                           child: SizedBox(

@@ -54,6 +54,8 @@ dependencies:
   firebase_core: ^1.19.0
   wonderpush_flutter: ^2.0.0
   wonderpush_fcm_flutter: ^1.0.1
+  get_storage: ^2.0.3
+  alarm: ^0.0.5
 
 
 dev_dependencies:
