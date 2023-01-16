@@ -22,7 +22,7 @@ class AllMosque extends StatefulWidget {
   State<AllMosque> createState() => _AllMosqueState();
 }
 
-var pinnedMasjid = {};
+List masjidList = [];
 bool _showSpinner = true;
 dynamic _allMosque = {"Masjids": []};
 
@@ -36,8 +36,11 @@ class _AllMosqueState extends State<AllMosque> {
       // then parse the JSON.
       setState(() {
         _allMosque = jsonDecode(response.body);
-        _allMosque['Masjids'].remove(getStorage.read('pinnedMasjid'));
+        masjidList = _allMosque['Masjids'];
+        masjidList.removeWhere((element) =>
+            element['name'] == getStorage.read('pinnedMasjid')['name']);
       });
+      print(getStorage.read('pinnedMasjid'));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -60,8 +63,12 @@ class _AllMosqueState extends State<AllMosque> {
           setState(() {
             _allMosque = jsonDecode(response.body);
             _showSpinner = false;
-            _allMosque['Masjids'].remove(getStorage.read('pinnedMasjid'));
+            masjidList = _allMosque['Masjids'];
+            masjidList.removeWhere((element) =>
+                element['name'] == getStorage.read('pinnedMasjid')['name']);
           });
+          print(masjidList);
+          print(getStorage.read('pinnedMasjid'));
         } else {
           // If the server did not return a 200 OK response,
           // then throw an exception.
@@ -177,7 +184,7 @@ class _AllMosqueState extends State<AllMosque> {
                                     .toString(),
                               )
                             : SizedBox(),
-                        for (var mosque in _allMosque['Masjids']!)
+                        for (var mosque in masjidList)
                           MosqueCard(
                             image: mosque['img'],
                             masjidName: mosque['name'],

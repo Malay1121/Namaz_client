@@ -311,36 +311,36 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(
-                                              width:
-                                                  responsiveWidth(130, context),
-                                              child: AutoSizeText(
-                                                TimeOfDay.fromDateTime(
-                                                      DateTime.parse(
-                                                          getTime['start']
-                                                              .toString()),
-                                                    )
-                                                        .format(context)
-                                                        .toString() +
-                                                    ' - ' +
-                                                    TimeOfDay.fromDateTime(
-                                                      DateTime.parse(
-                                                          getTime['end']
-                                                              .toString()),
-                                                    )
-                                                        .format(context)
-                                                        .toString(),
-                                                minFontSize: 5,
-                                                maxLines: 1,
-                                                style: GoogleFonts.inter(
-                                                  textStyle: TextStyle(
-                                                    color: Color(0xFFA3A3A3),
-                                                    fontSize: responsiveText(
-                                                        10, context),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            // SizedBox(
+                                            //   width:
+                                            //       responsiveWidth(130, context),
+                                            //   child: AutoSizeText(
+                                            //     TimeOfDay.fromDateTime(
+                                            //           DateTime.parse(
+                                            //               getTime['start']
+                                            //                   .toString()),
+                                            //         )
+                                            //             .format(context)
+                                            //             .toString() +
+                                            //         ' - ' +
+                                            //         TimeOfDay.fromDateTime(
+                                            //           DateTime.parse(
+                                            //               getTime['end']
+                                            //                   .toString()),
+                                            //         )
+                                            //             .format(context)
+                                            //             .toString(),
+                                            //     minFontSize: 5,
+                                            //     maxLines: 1,
+                                            //     style: GoogleFonts.inter(
+                                            //       textStyle: TextStyle(
+                                            //         color: Color(0xFFA3A3A3),
+                                            //         fontSize: responsiveText(
+                                            //             10, context),
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                           ],
                                         )
                                       ],
@@ -392,16 +392,16 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                               } else {
                                 setState(() {
                                   getStorage.write('pinnedMasjid', _mosqueData);
-                                  Alarm.set(
-                                    alarmDateTime: DateTime.now(),
-                                    assetAudio: "assets/beep_beep.mp3",
-                                    // onRing: () =>
-                                    //     setState(() => isRinging = true),
-                                    notifTitle: 'Alarm notification',
-                                    notifBody: 'Your alarm is ringing',
-                                  );
                                 });
                               }
+                              // Alarm.set(
+                              //   alarmDateTime: DateTime.now(),
+                              //   assetAudio: "assets/beep_beep.mp3",
+                              //   // onRing: () =>
+                              //   //     setState(() => isRinging = true),
+                              //   notifTitle: 'Alarm notification',
+                              //   notifBody: 'Your alarm is ringing',
+                              // );
                             },
                             child: Container(
                               width: responsiveWidth(30, context),

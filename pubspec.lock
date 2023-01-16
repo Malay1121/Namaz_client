@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "0.0.5"
   android_alarm_manager_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: android_alarm_manager_plus
       url: "https://pub.dartlang.org"
