@@ -31,37 +31,38 @@ class SingleMosqueScreen extends StatefulWidget {
 }
 
 dynamic _mosqueData = {
-  "name": "Masjid",
+  "_id": "635e82e0595a1d31b3878cb3",
+  "name": "Masjid-E-Amin",
   "map_link": "https://goo.gl/maps/4Pp38sqWWGcJXs8h6",
-  "img":
+  "img": "https://i.ibb.co/x7T8x0P/2019-06-04.jpg",
+  "background_img":
       "https://t3.ftcdn.net/jpg/04/40/04/56/360_F_440045623_BF4jzAxuOyYkDo04JJK0x9Fd0onYL3mN.jpg",
-  "background_img": "https://i.ibb.co/x7T8x0P/2019-06-04.jpg",
   "city": "surat",
   "area": "adajan patiya",
   "timing": {
     "fajr": {
-      "azan_time": "2022-10-30T00:28:26.650000",
-      "jammat_time": "2022-10-30T00:28:26.650000"
+      "azan_time": "2022-11-01T06:25:00",
+      "jammat_time": "2022-11-01T06:55:00"
     },
     "jumma": {
-      "azan_time": "2022-10-30T00:28:26.650000",
-      "jammat_time": "2022-10-30T00:28:26.650000"
+      "azan_time": "2022-11-01T13:00:00",
+      "jammat_time": "2022-11-01T13:50:00"
     },
     "zohr": {
-      "azan_time": "2022-10-30T00:28:26.650000",
-      "jammat_time": "2022-10-30T00:28:26.650000"
+      "azan_time": "2022-11-01T13:40:00",
+      "jammat_time": "2022-11-01T14:00:00"
     },
     "asr": {
-      "azan_time": "2022-10-30T00:28:26.650000",
-      "jammat_time": "2022-10-30T00:28:26.650000"
+      "azan_time": "2022-11-01T17:00:00",
+      "jammat_time": "2022-11-01T17:15:00"
     },
     "magrib": {
-      "azan_time": "2022-10-30T00:28:26.650000",
-      "jammat_time": "2022-10-30T00:28:26.650000"
+      "azan_time": "2022-11-01T18:23:00",
+      "jammat_time": "2022-11-01T18:26:00"
     },
     "isha": {
-      "azan_time": "2022-10-30T00:28:26.650000",
-      "jammat_time": "2022-10-30T00:28:26.650000"
+      "azan_time": "2022-11-01T20:15:00",
+      "jammat_time": "2022-11-01T20:30:00"
     }
   }
 };
@@ -115,7 +116,6 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
           // then parse the JSON.
           setState(() {
             _mosqueData = jsonDecode(response.body);
-            _showSpinner = false;
           });
         } else {
           // If the server did not return a 200 OK response,
@@ -167,6 +167,7 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
         // then parse the JSON.
         setState(() {
           getTime = jsonDecode(response.body);
+          _showSpinner = false;
         });
       } else {
         // If the server did not return a 200 OK response,
@@ -293,12 +294,28 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                                   responsiveWidth(130, context),
                                               child: AutoSizeText(
                                                 TimeOfDay.fromDateTime(
-                                                  DateTime.parse(_mosqueData[
-                                                                  'timing'][
-                                                              _currentNamazName
-                                                                  .toString()]
-                                                          ['jammat_time']
-                                                      .toString()),
+                                                  DateTime.parse(_mosqueData ==
+                                                          null
+                                                      ? '2022-11-01T06:55:00'
+                                                      : _mosqueData['timing'][
+                                                                  _currentNamazName
+                                                                      .toString()] ==
+                                                              null
+                                                          ? '2022-11-01T06:55:00'
+                                                          : _mosqueData['timing']
+                                                                          [
+                                                                          _currentNamazName
+                                                                              .toString()]
+                                                                      [
+                                                                      'jammat_time'] ==
+                                                                  null
+                                                              ? '2022-11-01T06:55:00'
+                                                              : _mosqueData['timing']
+                                                                          [
+                                                                          _currentNamazName
+                                                                              .toString()]
+                                                                      ['jammat_time']
+                                                                  .toString()),
                                                 ).format(context).toString(),
                                                 minFontSize: 5,
                                                 maxLines: 1,
