@@ -37,8 +37,10 @@ class _AllMosqueState extends State<AllMosque> {
       setState(() {
         _allMosque = jsonDecode(response.body);
         masjidList = _allMosque['Masjids'];
-        masjidList.removeWhere((element) =>
-            element['name'] == getStorage.read('pinnedMasjid')['name']);
+        getStorage.read('pinnedMasjid') != null
+            ? masjidList.removeWhere((element) =>
+                element['name'] == getStorage.read('pinnedMasjid')['name'])
+            : null;
       });
       print(getStorage.read('pinnedMasjid'));
     } else {
@@ -64,8 +66,10 @@ class _AllMosqueState extends State<AllMosque> {
             _allMosque = jsonDecode(response.body);
             _showSpinner = false;
             masjidList = _allMosque['Masjids'];
-            masjidList.removeWhere((element) =>
-                element['name'] == getStorage.read('pinnedMasjid')['name']);
+            getStorage.read('pinnedMasjid') != null
+                ? masjidList.removeWhere((element) =>
+                    element['name'] == getStorage.read('pinnedMasjid')['name'])
+                : null;
           });
           print(masjidList);
           print(getStorage.read('pinnedMasjid'));

@@ -8,6 +8,7 @@ import 'package:flutter_animator/animation/animation_preferences.dart';
 import 'package:flutter_animator/widgets/flippers/flip_in_y.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/date_time_patterns.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/all_mosque.dart';
@@ -311,36 +312,36 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                                 ),
                                               ),
                                             ),
-                                            // SizedBox(
-                                            //   width:
-                                            //       responsiveWidth(130, context),
-                                            //   child: AutoSizeText(
-                                            //     TimeOfDay.fromDateTime(
-                                            //           DateTime.parse(
-                                            //               getTime['start']
-                                            //                   .toString()),
-                                            //         )
-                                            //             .format(context)
-                                            //             .toString() +
-                                            //         ' - ' +
-                                            //         TimeOfDay.fromDateTime(
-                                            //           DateTime.parse(
-                                            //               getTime['end']
-                                            //                   .toString()),
-                                            //         )
-                                            //             .format(context)
-                                            //             .toString(),
-                                            //     minFontSize: 5,
-                                            //     maxLines: 1,
-                                            //     style: GoogleFonts.inter(
-                                            //       textStyle: TextStyle(
-                                            //         color: Color(0xFFA3A3A3),
-                                            //         fontSize: responsiveText(
-                                            //             10, context),
-                                            //       ),
-                                            //     ),
-                                            //   ),
-                                            // ),
+                                            SizedBox(
+                                              width:
+                                                  responsiveWidth(130, context),
+                                              child: AutoSizeText(
+                                                TimeOfDay.fromDateTime(
+                                                      DateTime.parse(
+                                                          getTime['start']
+                                                              .toString()),
+                                                    )
+                                                        .format(context)
+                                                        .toString() +
+                                                    ' - ' +
+                                                    TimeOfDay.fromDateTime(
+                                                      DateTime.parse(
+                                                          getTime['end']
+                                                              .toString()),
+                                                    )
+                                                        .format(context)
+                                                        .toString(),
+                                                minFontSize: 5,
+                                                maxLines: 1,
+                                                style: GoogleFonts.inter(
+                                                  textStyle: TextStyle(
+                                                    color: Color(0xFFA3A3A3),
+                                                    fontSize: responsiveText(
+                                                        10, context),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         )
                                       ],
@@ -384,24 +385,54 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                           Spacer(),
                           GestureDetector(
                             onTap: () {
-                              if (getStorage.read('pinnedMasjid').toString() ==
-                                  _mosqueData.toString()) {
-                                setState(() {
-                                  getStorage.remove('pinnedMasjid');
-                                });
+                              if (getStorage.read('pinnedMasjid') != null) {
+                                if (getStorage
+                                        .read('pinnedMasjid')['name']
+                                        .toString() ==
+                                    _mosqueData['name'].toString()) {
+                                  setState(() {
+                                    getStorage.remove('pinnedMasjid');
+                                  });
+                                } else {
+                                  setState(() {
+                                    getStorage.write(
+                                        'pinnedMasjid', _mosqueData);
+                                  });
+                                }
                               } else {
                                 setState(() {
                                   getStorage.write('pinnedMasjid', _mosqueData);
                                 });
                               }
-                              // Alarm.set(
-                              //   alarmDateTime: DateTime.now(),
-                              //   assetAudio: "assets/beep_beep.mp3",
-                              //   // onRing: () =>
-                              //   //     setState(() => isRinging = true),
-                              //   notifTitle: 'Alarm notification',
-                              //   notifBody: 'Your alarm is ringing',
-                              // );
+                              var now = DateTime.now();
+
+                              for (var namaz in _mosqueKeys)
+                                Alarm.set(
+                                  alarmDateTime: DateTime(
+                                      now.year,
+                                      now.month,
+                                      now.day,
+                                      DateTime.parse(_mosqueData['timing']
+                                                      [namaz.toString()]
+                                                  ['azan_time']
+                                              .toString())
+                                          .hour,
+                                      DateTime.parse(_mosqueData['timing']
+                                                      [namaz.toString()]
+                                                  ['azan_time']
+                                              .toString())
+                                          .minute,
+                                      DateTime.parse(_mosqueData['timing']
+                                                      [namaz.toString()]
+                                                  ['azan_time']
+                                              .toString())
+                                          .second),
+                                  assetAudio: "assets/beep_beep.mp3",
+                                  // onRing: () =>
+                                  //     setState(() => isRinging = true),
+                                  notifTitle: namaz + ' Notification',
+                                  notifBody: 'It is the the time for $namaz',
+                                );
                             },
                             child: Container(
                               width: responsiveWidth(30, context),
@@ -411,9 +442,13 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Icon(
-                                getStorage.read('pinnedMasjid').toString() ==
-                                        _mosqueData.toString()
-                                    ? Icons.bookmark
+                                getStorage.read('pinnedMasjid') != null
+                                    ? (getStorage
+                                                .read('pinnedMasjid')['name']
+                                                .toString() ==
+                                            _mosqueData['name'].toString()
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_outline)
                                     : Icons.bookmark_outline,
                                 color: Color(0xFF77B255),
                                 size: responsiveText(15, context),
@@ -480,72 +515,79 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                   Padding(
                     padding:
                         EdgeInsets.only(bottom: responsiveHeight(10, context)),
-                    child: Container(
-                      width: responsiveWidth(343, context),
-                      height: responsiveHeight(62, context),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF2D2D30),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: responsiveWidth(16, context),
-                          ),
-                          Image.asset(
-                            'assets/praying-man.png',
-                            height: responsiveText(24, context),
-                            width: responsiveText(24, context),
-                          ),
-                          SizedBox(
-                            width: responsiveWidth(15, context),
-                          ),
-                          SizedBox(
-                            width: responsiveWidth(100, context),
-                            child: AutoSizeText(
-                              key,
-                              style: GoogleFonts.inter(
-                                textStyle: TextStyle(
-                                  color: Color(0xFFDADADA),
-                                  fontSize: responsiveText(16, context),
+                    child: GestureDetector(
+                      onTap: () {
+                        print(
+                            getStorage.read('pinnedMasjid')['name'].toString() +
+                                _mosqueData['name'].toString());
+                      },
+                      child: Container(
+                        width: responsiveWidth(343, context),
+                        height: responsiveHeight(62, context),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF2D2D30),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: responsiveWidth(16, context),
+                            ),
+                            Image.asset(
+                              'assets/praying-man.png',
+                              height: responsiveText(24, context),
+                              width: responsiveText(24, context),
+                            ),
+                            SizedBox(
+                              width: responsiveWidth(15, context),
+                            ),
+                            SizedBox(
+                              width: responsiveWidth(100, context),
+                              child: AutoSizeText(
+                                key,
+                                style: GoogleFonts.inter(
+                                  textStyle: TextStyle(
+                                    color: Color(0xFFDADADA),
+                                    fontSize: responsiveText(16, context),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Spacer(),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              AutoSizeText(
-                                'Azan Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['azan_time'])).format(context)}',
-                                maxLines: 1,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    color: Color(0xFFDADADA),
-                                    fontSize: responsiveText(12, context),
+                            Spacer(),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                AutoSizeText(
+                                  'Azan Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['azan_time'])).format(context)}',
+                                  maxLines: 1,
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                      color: Color(0xFFDADADA),
+                                      fontSize: responsiveText(12, context),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: responsiveHeight(4, context),
-                              ),
-                              AutoSizeText(
-                                'Jammat Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['jammat_time'])).format(context)}',
-                                maxLines: 1,
-                                style: GoogleFonts.inter(
-                                  textStyle: TextStyle(
-                                    color: Color(0xFFDADADA),
-                                    fontSize: responsiveText(12, context),
+                                SizedBox(
+                                  height: responsiveHeight(4, context),
+                                ),
+                                AutoSizeText(
+                                  'Jammat Time - ${TimeOfDay.fromDateTime(DateTime.parse(_mosqueData['timing'][key]['jammat_time'])).format(context)}',
+                                  maxLines: 1,
+                                  style: GoogleFonts.inter(
+                                    textStyle: TextStyle(
+                                      color: Color(0xFFDADADA),
+                                      fontSize: responsiveText(12, context),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: responsiveWidth(16, context),
-                          ),
-                        ],
+                              ],
+                            ),
+                            SizedBox(
+                              width: responsiveWidth(16, context),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

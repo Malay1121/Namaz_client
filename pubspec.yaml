@@ -57,6 +57,7 @@ dependencies:
   get_storage: ^2.0.3
   alarm: ^0.0.5
   android_alarm_manager_plus: ^2.1.0
+  new_version: ^0.3.1
 
 
 dev_dependencies:

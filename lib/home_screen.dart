@@ -10,6 +10,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/constants.dart';
 import 'package:namaz_timing/namaz_timing.dart';
 import 'package:namaz_timing/responsive.dart';
+import 'package:new_version/new_version.dart';
 import 'package:time/time.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -161,7 +162,39 @@ class _HomePageState extends State<HomePage> {
       }
 
       await getData();
+      final newVersion = NewVersion(
+        iOSId: 'com.google.Vespa',
+        androidId: 'co.namaz.near.me',
+      );
+      const simpleBehavior = true;
+
+      if (simpleBehavior) {
+        basicStatusCheck(newVersion);
+      } else {
+        advancedStatusCheck(newVersion);
+      }
     });
+  }
+
+  basicStatusCheck(NewVersion newVersion) {
+    newVersion.showAlertIfNecessary(context: context);
+  }
+
+  advancedStatusCheck(NewVersion newVersion) async {
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      debugPrint(status.releaseNotes);
+      debugPrint(status.appStoreLink);
+      debugPrint(status.localVersion);
+      debugPrint(status.storeVersion);
+      debugPrint(status.canUpdate.toString());
+      newVersion.showUpdateDialog(
+        context: context,
+        versionStatus: status,
+        dialogTitle: 'Custom Title',
+        dialogText: 'Custom Text',
+      );
+    }
   }
 
   @override
