@@ -387,9 +387,9 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                             onTap: () {
                               if (getStorage.read('pinnedMasjid') != null) {
                                 if (getStorage
-                                        .read('pinnedMasjid')['name']
+                                        .read('pinnedMasjid')['_id']
                                         .toString() ==
-                                    _mosqueData['name'].toString()) {
+                                    _mosqueData['_id'].toString()) {
                                   setState(() {
                                     getStorage.remove('pinnedMasjid');
                                   });
@@ -444,9 +444,9 @@ class _SingleMosqueScreenState extends State<SingleMosqueScreen> {
                               child: Icon(
                                 getStorage.read('pinnedMasjid') != null
                                     ? (getStorage
-                                                .read('pinnedMasjid')['name']
+                                                .read('pinnedMasjid')['_id']
                                                 .toString() ==
-                                            _mosqueData['name'].toString()
+                                            _mosqueData['_id'].toString()
                                         ? Icons.bookmark
                                         : Icons.bookmark_outline)
                                     : Icons.bookmark_outline,

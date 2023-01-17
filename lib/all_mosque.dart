@@ -39,7 +39,7 @@ class _AllMosqueState extends State<AllMosque> {
         masjidList = _allMosque['Masjids'];
         getStorage.read('pinnedMasjid') != null
             ? masjidList.removeWhere((element) =>
-                element['name'] == getStorage.read('pinnedMasjid')['name'])
+                element['_id'] == getStorage.read('pinnedMasjid')['_id'])
             : null;
       });
       print(getStorage.read('pinnedMasjid'));
@@ -68,7 +68,7 @@ class _AllMosqueState extends State<AllMosque> {
             masjidList = _allMosque['Masjids'];
             getStorage.read('pinnedMasjid') != null
                 ? masjidList.removeWhere((element) =>
-                    element['name'] == getStorage.read('pinnedMasjid')['name'])
+                    element['_id'] == getStorage.read('pinnedMasjid')['_id'])
                 : null;
           });
           print(masjidList);
