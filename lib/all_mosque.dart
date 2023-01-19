@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:namaz_timing/constants.dart';
+import 'package:namaz_timing/counter_home.dart';
 import 'package:namaz_timing/main.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:namaz_timing/single_mosque_screen.dart';
@@ -116,10 +117,18 @@ class _AllMosqueState extends State<AllMosque> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      'assets/logo.png',
-                      width: responsiveText(30, context),
-                      height: responsiveText(30, context),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CounterHome()));
+                      },
+                      child: Icon(
+                        Icons.timer_outlined,
+                        color: Colors.white,
+                        size: responsiveHeight(25, context),
+                      ),
                     ),
                     FadeInDown(
                       child: Center(
@@ -137,10 +146,10 @@ class _AllMosqueState extends State<AllMosque> {
                         ),
                       ),
                     ),
-                    Image.asset(
-                      'assets/message.png',
-                      width: responsiveText(26, context),
-                      height: responsiveText(26, context),
+                    Icon(
+                      Icons.event,
+                      color: Colors.white,
+                      size: responsiveHeight(25, context),
                     ),
                   ],
                 ),

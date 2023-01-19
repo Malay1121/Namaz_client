@@ -231,10 +231,10 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      'assets/logo.png',
-                      width: responsiveText(30, context),
-                      height: responsiveText(30, context),
+                    Icon(
+                      Icons.timer_outlined,
+                      color: Colors.white,
+                      size: responsiveHeight(25, context),
                     ),
                     FadeInDown(
                       child: Center(
@@ -252,10 +252,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    Image.asset(
-                      'assets/message.png',
-                      width: responsiveText(26, context),
-                      height: responsiveText(26, context),
+                    Icon(
+                      Icons.event,
+                      color: Colors.white,
+                      size: responsiveHeight(25, context),
                     ),
                   ],
                 ),
