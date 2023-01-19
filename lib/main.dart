@@ -23,6 +23,7 @@ void main() async {
   HomeWidget.registerBackgroundCallback(backgroundCallback);
   await GetStorage.init();
   Alarm.init();
+  await Firebase.initializeApp();
   WonderPush.subscribeToNotifications();
   runApp(new MyApp());
 }
