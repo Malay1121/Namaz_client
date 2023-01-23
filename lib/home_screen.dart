@@ -162,40 +162,40 @@ class _HomePageState extends State<HomePage> {
       }
 
       await getData();
-      final newVersion = NewVersion(
-        iOSId: 'com.google.Vespa',
-        androidId: 'co.namaz.near.me',
-      );
-      const simpleBehavior = true;
+      //   final newVersion = NewVersion(
+      //     iOSId: 'com.google.Vespa',
+      //     androidId: 'co.namaz.near.me',
+      //   );
+      //   const simpleBehavior = true;
 
-      if (simpleBehavior) {
-        basicStatusCheck(newVersion);
-      } else {
-        advancedStatusCheck(newVersion);
-      }
+      //   if (simpleBehavior) {
+      //     basicStatusCheck(newVersion);
+      //   } else {
+      //     advancedStatusCheck(newVersion);
+      //   }
     });
   }
 
-  basicStatusCheck(NewVersion newVersion) {
-    newVersion.showAlertIfNecessary(context: context);
-  }
+  // basicStatusCheck(NewVersion newVersion) {
+  //   newVersion.showAlertIfNecessary(context: context);
+  // }
 
-  advancedStatusCheck(NewVersion newVersion) async {
-    final status = await newVersion.getVersionStatus();
-    if (status != null) {
-      debugPrint(status.releaseNotes);
-      debugPrint(status.appStoreLink);
-      debugPrint(status.localVersion);
-      debugPrint(status.storeVersion);
-      debugPrint(status.canUpdate.toString());
-      newVersion.showUpdateDialog(
-        context: context,
-        versionStatus: status,
-        dialogTitle: 'Custom Title',
-        dialogText: 'Custom Text',
-      );
-    }
-  }
+  // advancedStatusCheck(NewVersion newVersion) async {
+  //   final status = await newVersion.getVersionStatus();
+  //   if (status != null) {
+  //     debugPrint(status.releaseNotes);
+  //     debugPrint(status.appStoreLink);
+  //     debugPrint(status.localVersion);
+  //     debugPrint(status.storeVersion);
+  //     debugPrint(status.canUpdate.toString());
+  //     newVersion.showUpdateDialog(
+  //       context: context,
+  //       versionStatus: status,
+  //       dialogTitle: 'Custom Title',
+  //       dialogText: 'Custom Text',
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

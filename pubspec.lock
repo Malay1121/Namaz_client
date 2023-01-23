@@ -210,7 +210,7 @@ packages:
     source: hosted
     version: "0.11.0"
   flutter_local_notifications:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"

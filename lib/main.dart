@@ -3,10 +3,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:namaz_timing/home_screen.dart';
+import 'package:namaz_timing/notification_service.dart';
 import 'package:namaz_timing/responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_compass/utils/src/compass_ui.dart';
@@ -18,9 +20,38 @@ void main() async {
   //     InAppUpdate.startFlexibleUpdate();
   //   }
   // });
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   WidgetsFlutterBinding.ensureInitialized();
-  HomeWidget.registerBackgroundCallback(backgroundCallback);
+  // HomeWidget.regis terBackgroundCallback(backgroundCallback);
+  final AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('app_icon');
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid, macOS: null);
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+  );
+  Future<void> _showNotificationWithActions() async {
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      '...',
+      '...',
+      actions: <AndroidNotificationAction>[
+        AndroidNotificationAction('id_1', 'Action 1'),
+        AndroidNotificationAction('id_2', 'Action 2'),
+        AndroidNotificationAction('id_3', 'Action 3'),
+      ],
+    );
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        0, '...', '...', notificationDetails);
+  }
+
+  _showNotificationWithActions();
+
   await GetStorage.init();
   Alarm.init();
   WonderPush.subscribeToNotifications();

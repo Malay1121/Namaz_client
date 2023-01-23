@@ -244,51 +244,64 @@ class _CounterHomeState extends State<CounterHome> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => CounterPage(
-                                counterId: getStorage.read('counters') == null
-                                    ? 0.toString()
-                                    : (int.parse(getStorage
-                                                .read('counters')
-                                                .last
-                                                .toString()) +
-                                            1)
-                                        .toString(),
+                                counterId:
+                                    getStorage.read('counters') == null ||
+                                            getStorage.read('counters') == []
+                                        ? '0'
+                                        : (int.parse(json
+                                                    .decode(getStorage
+                                                        .read('counters')
+                                                        .last
+                                                        .toString())['tag']
+                                                    .toString()) +
+                                                1)
+                                            .toString(),
                               ),
                             ),
                           );
-                          counters.add(
-                            getStorage.read('counters') == null
-                                ? 0.toString()
-                                : (int.parse(getStorage
-                                            .read('counters')
-                                            .last['tag']
-                                            .toString()) +
-                                        1)
-                                    .toString(),
-                          );
-                          getStorage.write(
-                              getStorage.read('counters') == null
+                          setState(() {
+                            counters.add(
+                              getStorage.read('counters') == null ||
+                                      getStorage.read('counters') == []
                                   ? 0.toString()
-                                  : (int.parse(getStorage
-                                              .read('counters')
+                                  : (int.parse(jsonDecode(
+                                                  getStorage.read('counters'))
                                               .last['tag']
                                               .toString()) +
                                           1)
                                       .toString(),
-                              {
-                                'name': '',
-                                'tag': getStorage.read('counters') == null
-                                    ? 0.toString
-                                    : (int.parse(getStorage
-                                                .read('counters')
+                            );
+                            getStorage.write(
+                                getStorage.read('counters') == null ||
+                                        getStorage.read('counters') == []
+                                    ? 0.toString()
+                                    : (int.parse(jsonDecode(
+                                                    getStorage.read('counters'))
                                                 .last['tag']
                                                 .toString()) +
                                             1)
                                         .toString(),
-                                'count': 0
-                              });
-                          getStorage.write('counters', counters).then((value) {
-                            setState(() {});
+                                {
+                                  'name': '',
+                                  'tag': getStorage.read('counters') == null ||
+                                          getStorage.read('counters') == []
+                                      ? '0'
+                                      : (int.parse(jsonDecode(getStorage
+                                                      .read('counters'))
+                                                  .last['tag']
+                                                  .toString()) +
+                                              1)
+                                          .toString(),
+                                  'count': 0
+                                });
+                            getStorage.write('counters', counters);
                           });
+                          print(getStorage
+                                  .read(jsonDecode(getStorage.read('counters'))
+                                      .last
+                                      .toString())
+                                  .toString() +
+                              'asf');
                         },
                         child: Container(
                           height: responsiveHeight(56, context),
