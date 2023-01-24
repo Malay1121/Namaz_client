@@ -26,6 +26,8 @@ class CounterPage extends StatefulWidget {
   State<CounterPage> createState() => _CounterPageState();
 }
 
+var count;
+
 class _CounterPageState extends State<CounterPage> {
   var counter;
   TextEditingController _nameController = TextEditingController();
@@ -33,19 +35,24 @@ class _CounterPageState extends State<CounterPage> {
   @override
   void initState() {
     // TODO: implement initState
-    setState(() {
-      counter = getStorage.read(widget.counterId);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        counter = getStorage.read(widget.counterId);
 
-      _nameController =
-          TextEditingController(text: counter == null ? '' : counter['name']);
+        _nameController =
+            TextEditingController(text: counter == null ? '' : counter['name']);
+        print(getStorage.read(widget.counterId).toString() + 'asf');
+        count = counter['count'];
+      });
+
+      print(count + 'asf');
     });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    int count = getStorage.read(widget.counterId)['count'];
-
     return Scaffold(
       backgroundColor: Color(0xFF1E1E1E),
       body: Column(

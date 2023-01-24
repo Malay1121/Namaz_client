@@ -57,6 +57,14 @@ android {
         buildConfigField 'String', 'WONDERPUSH_CLIENT_SECRET', '"0e0aa8e576a75d2fc5ceccc8de2a11a5f3fb02d4093575e65282e5dcc745e440"'
         buildConfigField 'String', 'WONDERPUSH_SENDER_ID', '"224383467004"'
     }
+    compileOptions {
+    // Flag to enable support for the new language APIs
+    coreLibraryDesugaringEnabled true
+    // Sets Java compatibility to Java 8
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
 
     buildTypes {
         release {
@@ -84,4 +92,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.wonderpush:wonderpush-android-sdk:4.+'
     implementation 'com.wonderpush:wonderpush-android-sdk-fcm:1.+'
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
+
 }

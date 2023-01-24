@@ -60,6 +60,7 @@ dependencies:
   new_version: ^0.3.1
   step_circle_progressbar: ^0.1.3
   circle_progress_bar: ^0.1.2
+  flutter_local_notifications: ^13.0.0
 
 
 dev_dependencies:
@@ -68,7 +69,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/app_icon.png"
+  image_path: "assets/app_icon.jpg"
   min_sdk_android: 16
   web:
     generate: true
