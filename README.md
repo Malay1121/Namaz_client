@@ -2,6 +2,8 @@
 
 An application where you can find mosques in your area and their timings.
 
+## Testing Partner
+  This project is tested with [BrowserStack](https://www.browserstack.com/).
 ## About the application
 
 It is an open platform where people help each other to offer Salah on time in masjid.
